@@ -1,0 +1,427 @@
+/*------------------------------------*\
+	#OVERRIDE STLES
+	This style sheet can be used for two different functions:
+	1. Override specific Bootstrap styles.
+	2. Add your own styles.
+\*------------------------------------*/
+
+
+/**
+ * Padding-top is required if using .navbar-fixed-top.
+ * This can be removed Remove if using .navbar-static-top.
+ * The height may need to be changed if the height of you
+ * navigation changes.
+*/
+
+body {
+    padding-top: 70px;
+}
+
+h1,
+h2,
+h3,
+h4 {
+    font-family: "Raleway", Times, serif;
+}
+
+.col-border h4 {
+    padding: 10px;
+    font-weight: 400;
+}
+
+.col-border {
+    margin-top: 10px;
+    border-right: 1px #cdcdcd dotted;
+    padding: 1px;
+    border-radius: 2px;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+}
+
+.commit-header {
+    padding: 5px 10px;
+    background-color: #fafafa;
+    border-top: 1px solid #eee;
+    border-bottom: 1px solid #eee;
+    font-size: 12px;
+}
+
+.blob-code,
+.blob-num {
+    line-height: 20px;
+}
+
+.blob-num-deletion {
+    color: #bd2c00;
+}
+
+.commit-title {
+    padding: 5px 10px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #333;
+}
+
+.commits-listing::before {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 14px;
+    z-index: -1;
+    display: block;
+    width: 2px;
+    content: "";
+    background-color: #f3f3f3;
+}
+
+.commits-listing-padded {
+    padding-left: 39px;
+}
+
+.commits-listing {
+    position: relative;
+    padding-right: 5px;
+    padding-left: 20px;
+    margin-bottom: 15px;
+}
+
+.blob-num-addition {
+    color: #55a532;
+}
+
+.blob-num-baseline {
+    color: #808080;
+}
+
+#chart {
+    height: 280px;
+    margin: 0px auto;
+    text-align: center;
+}
+
+#negotiationchart {
+    height: 280px;
+    margin: 0px auto;
+    text-align: center;
+}
+
+.commit-group-title {
+    margin-top: 15px;
+    margin-left: -31px;
+    color: #767676;
+    margin-bottom: 10px;
+    padding-left: 22px;
+}
+
+#timelinechart svg {
+    height: 100px;
+}
+
+.blob-code-addition {
+    background-color: #eaffea;
+}
+
+.blob-code-deletion {
+    background-color: #ffdddd;
+    border-color: #f1c0c0;
+}
+
+.blob-code-baseline {
+    font-size: 10px;
+    /*background-color: #f9f9f9;*/
+}
+
+.jqstooltip {
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+}
+
+.blob-code {
+    position: relative;
+    padding-right: 10px;
+    padding-left: 10px;
+    vertical-align: top;
+}
+
+.commit-group-title {
+    margin-top: 14px;
+    margin-left: -31px;
+    color: #767676;
+    font-size: 10px;
+}
+
+.table-list {
+    display: table;
+    width: 100%;
+    color: #999;
+    table-layout: fixed;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.table-list-cell {
+    position: relative;
+    display: table-cell;
+    padding: 8px 10px;
+    font-size: 10px;
+    vertical-align: top;
+    border-top: 1px solid #eee;
+}
+
+.square {
+    display: table;
+    width: 50px;
+    height: 15px;
+}
+
+.fixed-size-square span {
+    display: table-cell;
+    text-align: center;
+    vertical-align: middle;
+    color: white
+}
+
+.slidercont {
+    margin-right: 10px;
+    margin-left: 10px;
+}
+
+
+/**
+ * Bootstrap requires a containing element to wrap site contents 
+ * and house the grid system. You may choose one of two containers.
+ * Use .container for a responsive fixed width container.
+ * Use .container-fluid for a full width container.
+
+ * If using container-fluid, you may need to set a maximum width, 
+ * so that the container will not spread to the entire viewport.
+*/
+
+.container-fluid {
+    max-width: 1200px;
+    font-family: 'Open Sans', Arial, Helvetica, sans-serif;
+}
+
+.button {
+    background-color: #4CAF50;
+    /* Green */
+    font-family: 'Open Sans', sans-serif;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+
+a {
+    color: #00AED8;
+}
+
+a:hover {
+    color: #00AED8;
+}
+
+section {
+    padding-top: 20px;
+}
+
+input[type="text"] {
+    display: block;
+    margin: 0;
+    width: 100%;
+    font-family: "Open Sans", sans-serif;
+    font-size: 18px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+    -webkit-border-radius: none;
+    -moz-border-radius: none;
+    -ms-border-radius: none;
+    -o-border-radius: none;
+    border-radius: none;
+}
+
+input[type="text"]:focus {
+    outline: none;
+}
+
+
+/* lists */
+
+ul.input-list {
+    list-style: none;
+    margin: 0 -10px;
+    padding: 0;
+}
+
+.herounit {
+    background: #E5E4E2;
+    padding-bottom: 25px;
+}
+
+ul.input-list li {
+    display: block;
+    padding: 0 10px;
+    width: 50%;
+    float: left;
+}
+
+@media all and (max-width: 800px) {
+    ul.input-list {
+        margin: 0;
+    }
+    ul.input-list li {
+        padding: 0;
+        width: 100%;
+        float: none;
+        margin-bottom: 10px;
+    }
+}
+
+.style-2 input[type="text"] {
+    padding: 10px;
+    border: solid 5px #c9c9c9;
+    transition: border 0.3s;
+}
+
+.style-2 input[type="text"]:focus,
+.style-2 input[type="text"].focus {
+    border: solid 5px #969696;
+}
+
+
+/**
+ * Bootstrap adds a 20px margin to the bottom of elements that 
+ * have been given the class of thumbnail. When images have a 
+ * caption after them, this margin may be too large. You can 
+ * override it like this:
+*/
+
+.thumbnail {
+    margin-bottom: 5px;
+}
+
+.navbar-header {
+    float: left;
+    padding: 18px;
+    width: 100%;
+}
+
+.navbar-brand {
+    float: none;
+    font-family: "Raleway", Times, serif;
+    text-transform: uppercase;
+    font-size: 22px;
+}
+
+
+/**
+ * We can add some "helper classes" to add or remove margins to
+ * help aspects of the layout. These helper classes should only
+ * be used sparingly.
+*/
+
+.margin-t-0 {
+    margin-top: 0;
+}
+
+.margin-t-h {
+    margin-top: .5em;
+}
+
+.margin-t-1 {
+    margin-top: 1em;
+}
+
+.margin-t-2 {
+    margin-top: 2em;
+}
+
+.margin-t-3 {
+    margin-top: 3em;
+}
+
+.margin-b-0 {
+    margin-bottom: 0;
+}
+
+.margin-b-h {
+    margin-bottom: .5em;
+}
+
+.margin-b-1 {
+    margin-bottom: 1em;
+}
+
+.margin-b-2 {
+    margin-bottom: 2em;
+}
+
+.margin-b-3 {
+    margin-bottom: 3em;
+}
+
+.margin-tb-0 {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.margin-tb-h {
+    margin-top: .5em;
+    margin-bottom: .5em;
+}
+
+.margin-tb-1 {
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+.margin-tb-2 {
+    margin-top: 2em;
+    margin-bottom: 2em;
+}
+
+.margin-tb-3 {
+    margin-top: 3em;
+    margin-bottom: 3em;
+}
+
+.grid {
+    margin: 1em auto;
+    border-collapse: collapse
+}
+
+.grid td {
+    cursor: pointer;
+    width: 15px;
+    height: 10px;
+    border: 1px solid #ccc;
+    text-align: center;
+    font-family: 'Open Sans', Arial, Helvetica, sans-serif;
+    font-size: 8px
+}
+
+.grid td.selected {
+    background-color: #808080;
+}
+
+.grid td.added {
+    background-color: #55a532;
+}
+
+.grid td.removed {
+    background-color: #ffdddd;
+}
+
+.grid td.clicked {
+    background-color: yellow;
+    font-weight: bold;
+    color: red;
+}

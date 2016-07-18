@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Geodesign Hub Design History</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="Description" lang="en" content="Geodesign Hub Synthesis Visualizer">
+    <meta name="author" content="Hrishikesh Ballal">
+    <meta name="robots" content="index, follow">
+
+    <!-- icons -->
+    <link rel="shortcut icon" href="favicon.ico">
+
+    <!-- Bootstrap Core CSS file -->
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+
+    <!-- Override CSS file - add your own CSS rules -->
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/ion.rangeSlider.css">
+    <link rel="stylesheet" href="assets/css/ion.rangeSlider.skinFlat.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/flatty.css" />
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css'>
+    <!-- Conditional comment containing JS files for IE6 - 8 -->
+    <!--[if lt IE 9]>
+			<script src="assets/js/html5.js"></script>
+			<script src="assets/js/respond.min.js"></script>
+		<![endif]-->
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-fixed-top navbar-inverse" role="navigation">
+        <div class="container-fluid">
+
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+						<span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+                <a class="navbar-brand" href="#">Geodesign Hub Design Synthesis History</a>
+            </div>
+            <!-- /.navbar-header -->
+
+
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container-fluid -->
+    </nav>
+    <!-- /.navbar -->
+
+    <!-- Page Content -->
+    <div class="container-fluid">
+        <div class="row">
+
+            <div class="col-sm-12">
+                <div class="page-header">
+                    <p class="small">This is a <a href="http://www.geodesignsupport.com/section/api/" target="_blank">Geodesign Hub API</a> experiment to visually demonstrate the design negotiation process. Please Enter your Geodesign Hub <a href="https://www.geodesignhub.com/api/token/"
+                            target="_blank">API Token</a> and Project ID to populate project details. A Project ID is a sixteen character ID of a project on Geodesign Hub. The code for this plugin is located on a <a href="https://github.com/hrishiballal/GDHSynthesisExplorer">GitHub repository</a>.
+                    </p><br>
+                    <ul class="input-list style-2 clearfix">
+                        <li>
+                            <input type="text" id="apikey" placeholder="Enter API Key">
+                        </li>
+                        <li>
+                            <input type="text" class="" maxlength="16" id="projectid" placeholder="Project ID">
+                        </li>
+                        <li><br><button type="submit" class="button" onclick="submitProjectDetails()">Get Synthesis Data</button></li>
+                    </ul>
+
+                </div>
+            </div>
+        </div>
+        <!-- /.row -->
+        <div class="row">
+
+            <div class="col-md-6">
+                <div class='chart'>
+                    <div id='chart'></div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class='neogotiationchart'>
+                    <div id='neogotiationchart'></div>
+                </div>
+            </div>
+        </div>
+        <!--<div class="row">
+            <div class="col-md-4">.col-md-4</div>
+            <div class="col-md-8">.col-md-8</div>
+        </div>-->
+        <!-- /.row -->
+        <div id="ctdetails">
+        </div>
+        <!--<footer class="margin-tb-3">
+            <div class="row">
+                <div class="col-lg-12">
+                    <p>Copyright &copy; Hrishikesh Ballal 2016</p>
+                </div>
+            </div>
+        </footer>-->
+    </div>
+    <!-- /.container-fluid -->
+
+    <!-- JQuery scripts -->
+    <script type="text/javascript" src="assets/js/jquery.min.js"></script>
+    <script type="text/javascript" src="assets/js/humane.min.js"></script>
+    <!-- Bootstrap Core scripts -->
+    <script type="text/javascript" src="assets/js/ion.rangeSlider.min.js"></script>
+    <script type="text/javascript" src="assets/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="assets/js/jquery.sparkline.min.js"></script>
+    <script type="text/javascript" src="assets/js/moment.min.js"></script>
+    <script type="text/javascript" src="assets/js/plotly.min.js"></script>
+    <script type="text/javascript" src="assets/js/colors.js"></script>
+    <script type="text/javascript">
+        function clearExistingHistory() {
+            $("#ctdetails").html("");
+        }
+        var synDetails = function() {
+            return {
+                cteams: [],
+                diagrams: [],
+                diagramslookup: [],
+                syndiagrams: [],
+                systems: [],
+                syns: [],
+                lastclicked: '',
+                synAddRemove: []
+            }
+        }();
+
+        // grid: http://jsfiddle.net/6qkdP/2/
+        function generateSynChart(syndata, cteams) {
+            var sdatalen = syndata.length;
+            var seriesdata = {};
+            var cteamlen = cteams.length;
+            for (var k1 = 0; k1 < cteamlen; k1++) {
+                seriesdata[cteams[k1]['id']] = {
+                    'x': [],
+                    'y': [],
+                    'type': 'scatter',
+                    'name': cteams[k1].title,
+                    'text': [],
+                    'marker': {
+                        size: 10,
+                        color: cteams[k1].color.rgb
+                    }
+
+                };
+            }
+
+            for (var x1 = 0; x1 < sdatalen; x1++) {
+                var cursyn = syndata[x1];
+                var date = moment(cursyn['creationdate']).format("YYYY-MM-DD HH:MM");
+                var cteamid = cursyn['cteamid'];
+                var desc = cursyn['description'];
+                var index = cteams.findIndex(x => x.id == cteamid);
+                seriesdata[cteamid]['x'].push(date);
+                seriesdata[cteamid]['y'].push(index + 1);
+                seriesdata[cteamid]['text'].push(desc);
+            }
+            var series = [];
+            for (key in seriesdata) {
+                series.push(seriesdata[key]);
+            }
+            var layout = {
+                // title: 'Design Synthesis History',
+                xaxis: {
+                    title: 'Time',
+                    titlefont: {
+                        family: "Raleway",
+                        size: 12,
+                        color: 'lightgrey'
+                    },
+                    type: 'date',
+                    autorange: true,
+                    showgrid: false,
+                    zeroline: false,
+                    showline: false,
+                    autotick: true,
+                    ticks: '',
+                    showticklabels: true
+                },
+                yaxis: {
+                    showgrid: true,
+                    zeroline: false,
+                    showline: false,
+                    autotick: true,
+                    ticks: '',
+                    range: [-1, (cteamlen + 1)],
+                    showticklabels: false
+                }
+            };
+            Plotly.newPlot('chart', series, layout);
+        }
+
+        function synDataReceivedOK(data) {
+            var ctlen = data.cteams.length;
+            for (var x = 0; x < ctlen; x++) {
+                // assign random color
+                var color = Colors.random();
+                data.cteams[x].color = color;
+            }
+            var diaglen = data.diagrams.length;
+            var syslen = data.systems.length;
+            for (var z = 0; z < diaglen; z++) {
+                var curdiag = data.diagrams[z];
+                var cursysid = curdiag.sysid;
+                var sysname = "";
+                for (var h = 0; h < syslen; h++) {
+                    var cursys = data.systems[h];
+                    if (cursysid === cursys.id) {
+                        sysname = cursys.sysname;
+                        break;
+                    }
+                }
+                synDetails.diagramslookup[curdiag.id] = sysname + "-" + curdiag.rank;
+            }
+            synDetails.cteams = data.cteams;
+            synDetails.diagrams = data.diagrams;
+            synDetails.syndiagrams = data.syndiagrams;
+            synDetails.syns = data.syns;
+            synDetails.systems = data.systems;
+            // set up the containers with the cteams. 
+            setupCTeamContainers(data.cteams);
+            var s = populateCTeamSyn(data.syns, data.syndiagrams, data.cteams);
+            var syndiagsorted = s[0];
+            synDetails.ctidsyn = s[1];
+            createDiagramsMiniGrid(syndiagsorted, data.systems, synDetails.diagramslookup, data.cteams, synDetails.diagrams);
+            var sar = populateAddedRemoved(syndiagsorted, synDetails.diagramslookup);
+            synDetails.synAddRemove = sar;
+            generateSynChart(syndiagsorted, data.cteams);
+            generateSparklines(sar, data.systems, synDetails.diagramslookup);
+            generatenegotiationsChart(synDetails.syndiagrams, sar, syndiagsorted);
+        }
+
+        function generatenegotiationsChart(syndiagrams, synaddremove, syndiagssorted) {
+            function onlyUnique(value, index, self) {
+                return self.indexOf(value) === index;
+            }
+            var sdatalen = syndiagrams.length;
+            var sortedlen = syndiagssorted.length;
+            var lastdate = syndiagssorted[sortedlen - 1].creationdate;
+            var firstdate = syndiagssorted[0].creationdate;
+            var allDates = [];
+            var curdate = moment(firstdate);
+            lastdate = moment(lastdate);
+            allDates.push(curdate);
+            while ((curdate).isSameOrBefore(lastdate)) {
+                curdate = curdate.add(6, 'hours');
+                allDates.push(curdate);
+            }
+            allDates.push(lastdate);
+            // 
+            var tmpalldiagsallsyn = [];
+            var sdlen = syndiagrams.length;
+            for (var y = 0; y < sdlen; y++) {
+                tmpalldiagsallsyn.concat(syndiagrams[y].diagrams);
+            }
+            var alldiagsallsyn = tmpalldiagsallsyn.filter(onlyUnique); // returns ['a', 1, 2, '1']
+            for (var b = 0; b < allDates.length; b++) {
+                var curdate = allDates[b];
+                for (var j = 0; j < sortedlen; j++) {
+                    var cursyn = syndiagssorted[j];
+                    if (moment(cursyn.creationdate).isSameOrBefore(curdate)) {
+
+                    }
+
+
+                }
+            }
+
+
+        }
+
+        function createDiagramsMiniGrid(syndiagramssorted, systems, diagramslookup, cteams, diagrams) {
+            // loop over the cteams
+            var ctlen = cteams.length;
+            // get the row and cols for grid. 
+            var rows = Math.max.apply(Math, diagrams.map(function(o) {
+                return o.rank;
+            }));
+            var cols = systems.length;
+            var dlen = diagrams.length;
+
+            for (var x = 0; x < ctlen; x++) {
+                // create a grid
+                var ctid = cteams[x].id;
+                var grid = clickableGrid(ctid, systems, rows, cols, function(el, row, col, i) {
+                    // console.log("You clicked on element:", el);
+                    // console.log("You clicked on row:", row);
+                    // console.log("You clicked on col:", col);
+                    // console.log("You clicked on item #:", i);
+                    // el.className = 'clicked';
+                    // if (synDetails.lastClicked) lastClicked.className = '';
+                    // synDetails.lastClicked = el;
+                });
+                $("#gridcont-" + ctid).html(grid)
+            }
+        }
+
+        function generateSparklines(synaddremove, systems, diagLookup) {
+            // for each synthesis, look at add / remvoe then total per system. 
+            var syslen = systems.length;
+
+            function isEven(n) {
+                return n % 2 == 0;
+            }
+            var synlen = synaddremove.length;
+            for (var u = 0; u < synlen; u++) {
+                var allsysaddremove = {};
+                var cursyn = synaddremove[u];
+                var cursynid = cursyn.id;
+                // iterate over add
+                for (var a = 0; a < cursyn.adds.length; a++) {
+                    var curaddid = cursyn.adds[a];
+                    var addsys = diagLookup[curaddid].split("-")[0];
+                    if (!(addsys in allsysaddremove)) {
+                        allsysaddremove[addsys] = {
+                            'addtotal': 0,
+                            'removetotal': 0
+                        };
+                    }
+                    allsysaddremove[addsys]['addtotal'] += 1;
+                }
+                // iterate over remove
+                for (var b = 0; b < cursyn.removes.length; b++) {
+                    var curremoveid = cursyn.removes[b];
+                    var removesys = diagLookup[curremoveid].split("-")[0];
+
+                    if (!(removesys in allsysaddremove)) {
+                        allsysaddremove[removesys] = {
+                            'addtotal': 0,
+                            'removetotal': 0
+                        };
+                    }
+                    allsysaddremove[removesys]['removetotal'] += 1;
+                }
+                //construct dataset 
+                var offset = {};
+                var finalvalues = [];
+                var colormap = [];
+                var counter = -1;
+                var suffix = [' added', ' removed'];
+                for (key in allsysaddremove) {
+                    var cursysaddremove = allsysaddremove[key];
+                    finalvalues.push(cursysaddremove.addtotal);
+                    counter += 1;
+
+                    var suff = isEven(counter) ? suffix[0] : suffix[1];
+                    colormap.push("green");
+                    offset[counter] = key + suff;
+                    finalvalues.push(cursysaddremove.removetotal * -1);
+                    counter += 1;
+                    var suff = isEven(counter) ? suffix[0] : suffix[1];
+                    offset[counter] = key + suff;
+                    colormap.push("red");
+
+                }
+                // // Draw a sparkline for the #sparkline element
+                $('#syn-' + cursynid + '-table-baseline').sparkline(finalvalues, {
+                    type: "bar",
+                    tooltipFormat: '{{offset:offset}} {{value}}',
+                    tooltipValueLookups: {
+                        'offset': offset
+                    },
+                    colorMap: colormap
+                });
+            }
+        }
+
+        function onlyUnique(value, index, self) {
+            return self.indexOf(value) === index;
+        }
+
+        function clearMiniGrid(cteamid) {
+            var cteams = synDetails.cteams;
+            for (var x = 0; x < cteams.length; x++) {
+                var ctid = cteams[x].id;
+                if (cteamid === ctid) {
+                    $("#gridtable-" + cteams[x].id + ">tr>td").removeClass("selected");
+                    $("#gridtable-" + cteams[x].id + ">tr>td").removeClass("added");
+                    $("#gridtable-" + cteams[x].id + ">tr>td").removeClass("removed");
+                }
+            }
+            //
+        }
+
+        function populateMiniGrid(diaglist, curctid, diagramslookup, toAdd, toRemove) {
+
+            var dlen = diaglist.length;
+            for (var x = 0; x < dlen; x++) {
+                var curdiag = diaglist[x];
+                var dlookup = diagramslookup[curdiag];
+                var s = dlookup.split('-');
+                var col = s[0];
+                var row = s[1];
+                $("#" + curctid + '-' + col + '-' + row).addClass('selected');
+            }
+            // 
+            if (toAdd) {
+                var addlen = toAdd.length;
+                for (var z1 = 0; z1 < addlen; z1++) {
+                    var curadd = toAdd[z1];
+                    var dladd = diagramslookup[curadd];
+                    var s1 = dladd.split('-');
+                    var col1 = s1[0];
+                    var row1 = s1[1];
+                    $("#" + curctid + '-' + col + '-' + row).removeClass('selected');
+                    $("#" + curctid + '-' + col1 + '-' + row1).addClass('added');
+                }
+            }
+            if (toRemove) {
+                var removelen = toRemove.length;
+                for (var z2 = 0; z2 < removelen; z2++) {
+                    var curremove = toRemove[z2];
+                    var dlremove = diagramslookup[curremove];
+                    var s2 = dlremove.split('-');
+                    var col2 = s2[0];
+                    var row2 = s2[1];
+                    $("#" + curctid + '-' + col + '-' + row).removeClass('selected');
+                    $("#" + curctid + '-' + col2 + '-' + row2).addClass('removed');
+                }
+
+            }
+        }
+
+        function populateAddedRemoved(syndiagsorted, diagramslookup) {
+            var seenctid = [];
+            var ctBaseDiagrams = {};
+            var curSynAddRemove = [];
+            var syndiaglen = syndiagsorted.length;
+            var seen = false;
+            for (var k = 0; k < syndiaglen; k++) {
+                var cursyndiag = syndiagsorted[k];
+                var curctid = cursyndiag.cteamid;
+                seen = (jQuery.inArray(curctid, seenctid) !== -1)
+                if (seen === false) {
+                    seenctid.push(curctid);
+                    ctBaseDiagrams[curctid] = cursyndiag.diagrams;
+                    populateMiniGrid(cursyndiag.diagrams, curctid, diagramslookup);
+                }
+                var baselinediagrams = ctBaseDiagrams[curctid];
+
+                var toAdd = [];
+                var toRemove = [];
+                var selDiags = cursyndiag['diagrams'];
+                var seldiaglen = selDiags.length;
+                for (var g1 = 0; g1 < seldiaglen; g1++) {
+                    var defaultadd = selDiags[g1];
+                    // $('<span>', {
+                    //     class: 'blob-num-baseline',
+                    //     html: ' ' + defaultadd
+                    // }).appendTo('#syn-' + cursyndiag['id'] + '-table-baseline');
+
+                }
+
+                toAdd = selDiags.filter(function(el) {
+                    return baselinediagrams.indexOf(el) < 0;
+                });
+                toRemove = baselinediagrams.filter(function(el) {
+                    return selDiags.indexOf(el) < 0;
+                });
+                toRemove = toRemove.filter(onlyUnique);
+                toAdd = toAdd.filter(onlyUnique);
+                curSynAddRemove.push({
+                    'id': cursyndiag['id'],
+                    'adds': toAdd,
+                    'removes': toRemove
+                });
+                var toAddlen = toAdd.length;
+                var toRemovelen = toRemove.length;
+                if (toAddlen > 0) {
+                    for (var j = 0; j < toAddlen; j++) {
+                        var curAdd = toAdd[j];
+                        $('<p>', {
+                            class: 'blob-num-addition',
+                            html: '<span class="glyphicon glyphicon-plus"></span> ' + diagramslookup[curAdd]
+                        }).appendTo('#syn-' + cursyndiag['id'] + '-table-add');
+                    }
+                }
+                if (toRemovelen > 0) {
+                    for (var u = 0; u < toRemovelen; u++) {
+                        var curRemove = toRemove[u];
+                        $('<p>', {
+                            class: 'blob-num-deletion',
+                            html: '<span class="glyphicon glyphicon-minus"></span> ' + diagramslookup[curRemove]
+                        }).appendTo('#syn-' + cursyndiag['id'] + '-table-del');
+                    }
+                }
+                ctBaseDiagrams[curctid] = cursyndiag['diagrams'];
+            }
+            return curSynAddRemove;
+        }
+
+        function populateCTeamSyn(synthesisdata, syndiagramdata, cteams) {
+            var syndatalen = synthesisdata.length;
+            var syndiagramslength = syndiagramdata.length;
+            var syndiagdatahybrid = [];
+            for (var g = 0; g < syndiagramslength; g++) {
+                var cursyndiagdata = syndiagramdata[g];
+                for (var r = 0; r < syndatalen; r++) {
+                    var cursyndata = synthesisdata[r];
+                    if (cursyndiagdata['synthesisid'] === cursyndata['id']) {
+                        cursyndata['diagrams'] = cursyndiagdata['diagrams'];
+                        syndiagdatahybrid.push(cursyndata);
+                        break;
+                    }
+                }
+            }
+            var sd = syndiagdatahybrid.sort(function(a, b) {
+                // Turn your strings into dates, and then subtract them
+                // to get a value that is either negative, positive, or zero.
+                return new Date(a.creationdate) - new Date(b.creationdate);
+            });
+            var baselinesyns = [];
+            var seenctid = [];
+            var ctidsyn = {};
+            for (var l = 0; l < cteams.length; l++) {
+                ctidsyn[cteams[l].id] = [];
+            }
+            var synlen = sd.length;
+            for (var x = 0; x < synlen; x++) {
+                var seen = false;
+                var cursyn = sd[x];
+                var curctid = cursyn['cteamid'];
+
+                seen = (jQuery.inArray(curctid, seenctid) !== -1)
+                if (seen === false) {
+                    seenctid.push(curctid);
+                }
+                var synid = cursyn['id'];
+                ctidsyn[curctid].push(synid);
+                var curCTEle = $("#cteam-" + curctid);
+                var syndescription = cursyn['description'];
+                var creationdate = cursyn['creationdate'];
+                var friendlycreationdate = moment(creationdate).format('MMMM Do YYYY, h:mm a');
+                $('<div/>', {
+                    id: 'syn-' + synid,
+                    class: 'commits-listing'
+                }).appendTo(curCTEle);
+
+                $('<div/>', {
+                    class: 'commit-group-title',
+                    html: '<span class="glyphicon glyphicon glyphicon-tag"> </span> Saved ' + friendlycreationdate + '.'
+                }).appendTo('#syn-' + synid);
+                $('<div/>', {
+                    class: 'commit-header',
+                    text: syndescription
+                }).appendTo('#syn-' + synid);
+                if (seen) {
+                    $('<div/>', {
+                        class: 'table-list-cell blob-code-baseline',
+                        id: 'syn-' + synid + '-table-baseline'
+                    }).appendTo('#syn-' + synid);
+                    $('<div/>', {
+                        class: 'table-list',
+                        id: 'syn-' + synid + '-table'
+                    }).appendTo('#syn-' + synid);
+                    $('<div/>', {
+                        class: 'table-list-cell blob-code-addition',
+                        id: 'syn-' + synid + '-table-add'
+                    }).appendTo('#syn-' + synid + '-table');
+
+                    $('<div/>', {
+                        class: 'table-list-cell blob-code-deletion',
+                        id: 'syn-' + synid + '-table-del'
+                    }).appendTo('#syn-' + synid + '-table');
+                } else {
+                    $('<div/>', {
+                        class: 'commit-title',
+                        text: "Initial Design"
+                    }).appendTo('#syn-' + synid);
+
+                    // $('<div/>', {
+                    //     class: 'table-list-cell blob-code-baseline',
+                    //     id: 'syn-' + synid + '-table-baseline'
+                    // }).appendTo('#syn-' + synid + '-table');
+                }
+            }
+            // generate the input sliders;
+            for (sliderctid in ctidsyn) {
+                var cursyn = ctidsyn[sliderctid];
+                $("#slider-" + sliderctid).ionRangeSlider({
+                    type: "single",
+                    min: 1,
+                    max: cursyn.length,
+                    step: 1,
+                    onFinish: function(data) {
+                        var $this = $(data.input),
+                            synvalue = $this.prop("value"),
+                            ctid = $this.prop("id").split('-')[1];
+                        updateMiniGrid(synvalue, ctid);
+                    },
+                });
+            }
+            return [sd, ctidsyn];
+        }
+
+        function updateMiniGrid(synvalue, ctid) {
+            var dlookup = synDetails.diagramslookup;
+            var synvalue = synvalue - 1;
+            var synid = synDetails.ctidsyn[ctid][synvalue];
+            var synaddremove = synDetails.synAddRemove;
+            var adlen = synaddremove.length;
+            var toAdd = [];
+            var toRemove = [];
+            for (var x = 0; x < adlen; x++) {
+                var cursyn = synaddremove[x];
+                if (cursyn.id === synid) {
+                    toAdd = cursyn.adds;
+                    toRemove = cursyn.removes;
+                }
+            }
+
+            var syndiags = synDetails.syndiagrams;
+            var diaglen = syndiags.length;
+            clearMiniGrid(parseInt(ctid));
+            for (var k1 = 0; k1 < diaglen; k1++) {
+                var cursyndiag = syndiags[k1];
+                if (synid === cursyndiag.synthesisid) {
+                    populateMiniGrid(cursyndiag.diagrams, ctid, dlookup, toAdd, toRemove);
+                    break;
+                }
+            }
+        }
+
+        function setupCTeamContainers(cteamdata) {
+            var ctlen = cteamdata.length;
+            var row = 0;
+            for (var x = 0; x < ctlen; x++) {
+                var curCT = cteamdata[x];
+                var curctid = curCT['id'];
+                if (row === 0 || ((row % 6) == 0)) {
+                    row += 1;
+                    $('<div/>', {
+                        id: 'row-' + row,
+                        class: 'row margin-b-2'
+                    }).appendTo("#ctdetails");
+                }
+                $('<div/>', {
+                    id: 'cteam-' + curctid,
+                    class: 'col-sm-4 col-md-2 col-border'
+                }).appendTo("#row-" + row);
+                $('<h4>', {
+                    html: "<div class='square' style='background-color:" + curCT['color']['rgb'] + ";'></div> " + curCT['title']
+                }).appendTo("#cteam-" + curctid);
+                $('<hr>', {}).appendTo("#cteam-" + curctid);
+
+                $('<div/>', {
+                    class: 'gridcont',
+                    id: 'gridcont-' + curctid
+                }).appendTo("#cteam-" + curctid);
+                $('<div/>', {
+                    class: 'slidercont',
+                    id: 'slidercont-' + curctid,
+                    html: "<input id='slider-" + curctid + "'></input>"
+                }).appendTo("#cteam-" + curctid);
+                $('<hr>', {}).appendTo("#cteam-" + curctid);
+            }
+        }
+
+        function submitProjectDetails() {
+            var apikey = $("#apikey").val();
+            var projectid = $("#projectid").val();
+            if (apikey.length > 20 && projectid.length == 16) {
+                var d = {
+                    'apikey': apikey,
+                    'projectid': projectid
+                };
+                var promise = $.ajax({
+                    url: '/post/',
+                    data: JSON.stringify(d),
+                    contentType: "application/json",
+                    type: 'POST'
+                });
+
+                humane.log("Submitting request..", {
+                    addnCls: 'humane-flatty-info'
+                });
+                promise.done(function(data) {
+                    if (data.status) {
+                        clearExistingHistory();
+                        synDataReceivedOK(data);
+                        humane.log("Synthesis Data populated.", {
+                            addnCls: 'humane-flatty-success'
+                        });
+                    } else {
+                        humane.log("Error in getting synthesis data. Please check your project id and credentials.", {
+                            addnCls: 'humane-flatty-error'
+                        });
+
+                    }
+                });
+                promise.fail(function(data) {
+                    humane.log("Either the API Key or Project ID is incorrect. Please check your input.", {
+                        addnCls: 'humane-flatty-error'
+                    });
+                });
+            } else {
+                humane.log("Please enter a valid project id and a API key.", {
+                    addnCls: 'humane-flatty-error'
+                });
+            }
+        }
+
+        function clickableGrid(ctid, systems, rows, cols, callback) {
+            // map the systemid to column. 
+            var collookup = {};
+            for (var k = 0; k < systems.length; k++) {
+                collookup[k] = systems[k].sysname;
+            }
+
+            var i = 0;
+            var grid = document.createElement('table');
+            grid.setAttribute("id", 'gridtable-' + ctid);
+            grid.className = 'grid';
+            for (var r = 0; r < rows; ++r) {
+
+                var tr = grid.appendChild(document.createElement('tr'));
+                for (var c = 0; c < cols; ++c) {
+                    var rowid = r;
+                    var cellid = ctid + '-' + collookup[c] + '-' + rowid;
+                    var cell = tr.appendChild(document.createElement('td'));
+                    cell.setAttribute("id", cellid);
+                    //cell.innerHTML = ++i;
+                    // cell.addEventListener('click', (function(el, r, c, i) {
+                    //     return function() {
+                    //         callback(el, r, c, i);
+                    //     }
+                    // })(cell, r, c, i), false);
+                }
+            }
+            return grid;
+        }
+    </script>
+</body>
+
+
+</html>

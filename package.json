@@ -1,0 +1,25 @@
+{
+    "name": "gdhsynexplorer",
+    "version": "1.0.0",
+    "description": "A Geodesign Hub API experiment to help visualize progression of synthesis and negotiations in a design.",
+    "main": "app.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/hrishiballal/GDHSynthesisExplorer/"
+    },
+    "keywords": [
+        "Geodesign",
+        "Hub"
+    ],
+    "author": "Hrishikesh Ballal",
+    "license": "MIT",
+    "dependencies": {
+        "express": "^4.13.4",
+        "body-parser": "^1.15.1",
+        "request": "^2.72.0",
+        "async": "^1.5.2"
+    }
+}
