@@ -1,5 +1,5 @@
 {
-    "name": "darwindesignexplorer",
+    "name": "geodesigndna",
     "version": "1.0.0",
     "description": "A Geodesign Hub API experiment to help visualize evolution of a synthetic design and negotiations.",
     "main": "app.js",
@@ -8,7 +8,7 @@
     },
     "repository": {
         "type": "git",
-        "url": "https://github.com/hrishiballal/darwin-design-explorer/"
+        "url": "https://github.com/hrishiballal/geodesign-dna/"
     },
     "keywords": [
         "Geodesign",
