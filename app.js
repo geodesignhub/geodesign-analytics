@@ -16,7 +16,7 @@ app.get('/', function(request, response) {
 });
 
 app.post('/post/', function(request, response) {
-    var baseurl = 'http://local.dev:8000/api/v1/projects/';
+    var baseurl = 'https://www.geodesignhub.com/api/v1/projects/';
     var apikey = request.body.apikey;
     var projectid = request.body.projectid;
     var cred = "Token " + apikey;

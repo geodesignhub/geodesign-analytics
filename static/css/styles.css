@@ -94,13 +94,13 @@ h4 {
 }
 
 #chart {
-    height: 280px;
+    height: 380px;
     margin: 0px auto;
     text-align: center;
 }
 
-#negotiationchart {
-    height: 280px;
+#neogotiationchart {
+    height: 1000px;
     margin: 0px auto;
     text-align: center;
 }

@@ -1,14 +1,14 @@
 {
-    "name": "gdhsynexplorer",
+    "name": "darwindesignexplorer",
     "version": "1.0.0",
-    "description": "A Geodesign Hub API experiment to help visualize progression of synthesis and negotiations in a design.",
+    "description": "A Geodesign Hub API experiment to help visualize evolution of a synthetic design and negotiations.",
     "main": "app.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "repository": {
         "type": "git",
-        "url": "https://github.com/hrishiballal/GDHSynthesisExplorer/"
+        "url": "https://github.com/hrishiballal/darwin-design-explorer/"
     },
     "keywords": [
         "Geodesign",

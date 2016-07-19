@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Geodesign Hub Design History</title>
+    <title>Project Darwin: Design Explorer</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="Description" lang="en" content="Geodesign Hub Synthesis Visualizer">
     <meta name="author" content="Hrishikesh Ballal">
@@ -39,7 +39,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#">Geodesign Hub Design Synthesis History</a>
+                <a class="navbar-brand" href="#">Project Darwin: Design Explorer</a>
             </div>
             <!-- /.navbar-header -->
             <!-- /.navbar-collapse -->
@@ -51,48 +51,53 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-12">
-                <div class="page-header">
-                    <ul class="input-list style-2 clearfix">
-                        <li>
-                            <input type="text" id="apikey" placeholder="Enter API Key">
-                        </li>
-                        <li>
-                            <input type="text" class="" maxlength="16" id="projectid" placeholder="Project ID">
-                        </li>
-                        <li>
-                            <br>
-                            <button type="submit" class="button" onclick="submitProjectDetails()">Get Synthesis Data</button>
-                        </li>
-                    </ul>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <p class="small">This is a <a href="http://www.geodesignsupport.com/section/api/" target="_blank">Geodesign Hub API</a> experiment to visually demonstrate the process of design evolution. Please Enter your Geodesign Hub <a href="https://www.geodesignhub.com/api/token/" target="_blank">API Token</a> and Project ID to populate project details. The code for this plugin is located on a <a href="https://github.com/hrishiballal/GDHSynthesisExplorer">GitHub repository</a>.
+                        </p>
+                    </div>
                 </div>
+                <ul class="input-list style-2 clearfix">
+                    <li>
+                        <input type="text" id="apikey" value="bf6568eeebe620616f715753b4a70bd90b07d940" placeholder="Enter API Key">
+                    </li>
+                    <li>
+                        <input type="text" class="" value="23f85c2a201b8cfb" maxlength="16" id="projectid" placeholder="Project ID">
+                    </li>
+                    <li>
+                        <br>
+                        <button type="submit" class="button" onclick="submitProjectDetails()">Get Synthesis Data</button>
+                    </li>
+                </ul>
             </div>
         </div>
         <!-- /.row -->
+        <hr>
         <div class="row">
             <div class="col-md-12">
+                <h2>Diagram Paths <small>Diagrams selected by design teams throughout design process. </small></h2>
+                <p>The y-axis is all the diagrams that are used in designs, sorted by the systems. On the x-axis, are designs in chronological order of saving and also sorted by the change team. The points mean that the diagram was in the design and the joined lines mean that the diagram was consecutively saved designs. </p>
                 <div class='neogotiationchart'>
                     <div id='neogotiationchart'></div>
                 </div>
             </div>
         </div>
         <!-- /.row -->
+        <hr>
         <div class="row">
             <div class="col-md-12">
+                <h2>Design Timelines <small>When different design teams saved their designs.</small></h2>
                 <div class='chart'>
                     <div id='chart'></div>
                 </div>
             </div>
         </div>
         <!-- /.row -->
+        <hr>
+        <h2>Design Evolution <small>Change teams and how their design evolved.</small></h2>
         <div id="ctdetails">
         </div>
         <footer class="margin-tb-3">
-            <div class="row">
-                <div class="col-lg-12">
-                    <p class="small">This is a <a href="http://www.geodesignsupport.com/section/api/" target="_blank">Geodesign Hub API</a> experiment to visually demonstrate the design negotiation process. Please Enter your Geodesign Hub <a href="https://www.geodesignhub.com/api/token/" target="_blank">API Token</a> and Project ID to populate project details. A Project ID is a sixteen character ID of a project on Geodesign Hub. The code for this plugin is located on a <a href="https://github.com/hrishiballal/GDHSynthesisExplorer">GitHub repository</a>.
-                    </p>
-                </div>
-            </div>
         </footer>
     </div>
     <!-- /.container-fluid -->
@@ -136,7 +141,7 @@
                 'name': cteams[k1].title,
                 'text': [],
                 'marker': {
-                    size: 10,
+                    size: 8,
                     color: cteams[k1].color.rgb
                 }
 
@@ -158,17 +163,17 @@
             series.push(seriesdata[key]);
         }
         var layout = {
-            // title: 'Design Synthesis History',
+            // title: 'Change Teams and Design History',
             xaxis: {
-                title: 'Time',
+                title: 'Time Design Saved',
                 titlefont: {
                     family: "Raleway",
                     size: 12,
-                    color: 'lightgrey'
+                    color: 'darkgrey'
                 },
-                type: 'date',
+                // type: 'date',
                 autorange: true,
-                showgrid: false,
+                showgrid: true,
                 zeroline: false,
                 showline: false,
                 autotick: true,
@@ -176,8 +181,8 @@
                 showticklabels: true
             },
             yaxis: {
-                showgrid: true,
-                zeroline: false,
+                showgrid: false,
+                zeroline: true,
                 showline: false,
                 autotick: true,
                 ticks: '',
@@ -225,16 +230,30 @@
         synDetails.synAddRemove = sar;
         generateSynChart(syndiagsorted, data.cteams);
         generateSparklines(sar, data.systems, synDetails.diagramslookup);
-        generatenegotiationsChart(synDetails.syndiagrams, sar, syndiagsorted, synDetails.diagramslookup);
+        generatenegotiationsChart(synDetails.syndiagrams, sar, syndiagsorted, synDetails.diagramslookup, data.cteams, data.diagrams);
     }
 
-    function generatenegotiationsChart(syndiagrams, synaddremove, syndiagssorted, diagramslookup) {
-        function onlyUnique(value, index, self) {
-            return self.indexOf(value) === index;
+    function generatenegotiationsChart(syndiagrams, synaddremove, syndiagssorted, diagramslookup, cteams, diagrams) {
+        function dynamicSort(property) {
+            var sortOrder = 1;
+            if (property[0] === "-") {
+                sortOrder = -1;
+                property = property.substr(1);
+            }
+            return function(a, b) {
+                var result = (a[property] < b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0;
+                return result * sortOrder;
+            }
         }
         var sdatalen = syndiagrams.length;
-        var sortedlen = syndiagssorted.length;
 
+        // var sd = syndiagssorted;
+        var sd = syndiagssorted.sort(function(a, b) {
+            // Turn your strings into dates, and then subtract them
+            // to get a value that is either negative, positive, or zero.
+            return new Date(a.cteamid) - new Date(b.cteamid);
+        });
+        var sortedlen = sd.length;
         var tmpalldiagsallsyn = [];
         var sdlen = syndiagrams.length;
         var xaxisrange = [];
@@ -242,41 +261,84 @@
         for (var y = 0; y < sdlen; y++) {
             tmpalldiagsallsyn = tmpalldiagsallsyn.concat(syndiagrams[y].diagrams);
         }
-        var alldiagsallsyn = tmpalldiagsallsyn.filter(onlyUnique); // returns ['a', 1, 2, '1']
-        var yaxisvals = [];
-        var yaxistext  = [];
-        for (var w=0;w<alldiagsallsyn.length;w++){
+        // a list of all the diagrams ever used in all the syntehsi. 
+        var ad = tmpalldiagsallsyn.filter(onlyUnique); // returns ['a', 1, 2, '1']
+        // sort the uniq diagrams by name
+        var tmpdiagname = [];
+        for (var u9 = 0; u9 < ad.length; u9++) {
+            var cdiag = ad[u9]; //id
+            var n = diagramslookup[cdiag].split('-')[0];
+            tmpdiagname.push({
+                'id': cdiag,
+                'name': n
+            });
+        }
+        tmpdiagname = tmpdiagname.sort(dynamicSort("name"));
+
+        var alldiagsallsyn = [];
+        for (var d = 0; d < tmpdiagname.length; d++) {
+            alldiagsallsyn.push(tmpdiagname[d].id);
+        }
+
+        var yaxisvals = [-1];
+        var yaxistext = [" "];
+        // for all the y axis keep the 
+        for (var w = 0; w < alldiagsallsyn.length; w++) {
             var curUniq = alldiagsallsyn[w];
             yaxisvals.push(w);
             yaxistext.push(diagramslookup[curUniq]);
         }
+        // for all the diagrams keep a list of the xs, ys and the text.
         var tracelist = {};
         for (var j = 0; j < alldiagsallsyn.length; j++) {
             tracelist[alldiagsallsyn[j]] = {
                 'x': [],
                 'y': [],
-                'text': []
+                'text': [],
+                'color': []
             };
         };
+        var synidDesc = {};
+        for (var d = 0; d < sortedlen; d++) {
+            var csyn = sd[d];
+            var cteamid = csyn.cteamid;
+            var title = "";
+            for (var r = 0; r < cteams.length; r++) {
+                var curteam = cteams[r];
+                if (curteam.id === cteamid) {
+                    title = curteam.title;
+                    break;
+                }
+            }
+            var desc = (csyn.description.length > 9) ? csyn.description.substring(0, 9) + '..' : csyn.description;
+            synidDesc[csyn.id] = title + " " + desc;
+        }
+        // function getPointColor(key)
+        // {
+
+        //     return 
+        // }
+
         for (var t = 0; t < sortedlen; t++) {
-
-            var cursyn = syndiagssorted[t];
-            xaxisrange.push(cursyn.description);
-
+            var cursyn = sd[t];
+            xaxisrange.push(synidDesc[cursyn.id]);
             var curDiags = cursyn['diagrams'];
             var cdiaglen = curDiags.length;
-            var creationdate = cursyn['creationdate'];
+            // var creationdate = cursyn['creationdate'];
             // xaxisval.push(moment(creationdate).format("YYYY-MM-DD HH:MM"));
-            xaxisval.push(cursyn.description);
+            xaxisval.push(synidDesc[cursyn.id]);
             for (key in tracelist) {
                 var k = parseInt(key);
                 var seen = (jQuery.inArray(k, curDiags) !== -1);
                 if (seen === false) {
-                    tracelist[k]['y'].push(-1);
-                    tracelist[k]['x'].push(cursyn.description);
+                    tracelist[k]['y'].push(" ");
+                    tracelist[k]['x'].push(synidDesc[cursyn.id]);
+                    // tracelist[k]['color'].push(" ");
                 } else {
+                    // var color = getPointColor(k);
+                    // tracelist[k]['color'].push(color);
                     tracelist[k]['y'].push(alldiagsallsyn.indexOf(k));
-                    tracelist[k]['x'].push(cursyn.description);
+                    tracelist[k]['x'].push(synidDesc[cursyn.id]);
                 }
                 tracelist[k]['text'].push(diagramslookup[k]);
             }
@@ -288,38 +350,68 @@
                 'x': tracelist[k1]['x'],
                 'y': tracelist[k1]['y'],
                 'text': tracelist[k1]['text'],
-                mode: 'markers',
+                mode: 'lines+markers',
                 hoverinfo: "y",
-                type: 'scatter'
+                type: 'scatter',
+                marker: {
+                    size: 4
+                },
+
             });
         }
-        console.log(yaxisvals);
-        console.log(yaxistext);
+
         var layout = {
-            // title: 'Design Synthesis History',
+            hovermode: 'closest',
+            // title: 'Diagrams and Designs',
+            margin: {
+                l: 10,
+                r: 10,
+                b: 100,
+                t: 30,
+                pad: 4
+            },
             showlegend: false,
             xaxis: {
-                title: 'Time',
+                title: 'Grouped designs by change teams and chronologically ordered',
                 titlefont: {
                     family: "Raleway",
                     size: 12,
-                    color: 'lightgrey'
+                    color: 'darkgrey'
+                },
+                tickfont: {
+                    family: "Raleway",
+                    size: 10,
+                    color: 'black'
                 },
                 showgrid: true,
                 tickmode: "array",
                 tickvals: xaxisval,
-                ticktext: xaxisrange
+                ticktext: xaxisrange,
+                tickangle: 90,
+                // range: [0, xaxisrange],
+                showticklabels: true,
             },
             yaxis: {
-                showgrid: true,
+                // title: 'Diagrams',
+                // titlefont: {
+                //     family: "Raleway",
+                //     size: 11,
+                //     color: 'darkgrey'
+                // },
+                // tickfont: {
+                //     family: "Raleway",
+                //     size: 10,
+                //     color: 'black'
+                // },
+                showgrid: false,
                 zeroline: false,
-                showline: true,
-                // autotick: true,
+                showline: false,
+                autotick: false,
                 tickmode: "array",
                 tickvals: yaxisvals,
                 ticktext: yaxistext,
                 range: [-1, alldiagsallsyn.length],
-                // showticklabels: false,
+                showticklabels: false,
             }
         };
         Plotly.newPlot('neogotiationchart', yaxisdata, layout);
