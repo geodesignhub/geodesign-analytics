@@ -1,11 +1,14 @@
-# Geodesign Hub Decision Model Viewer
-This is small plugin to help with a decision model in a Geodesign Project. It uses the Geodesign Hub [API](http://www.geodesignsupport.com/section/api/). Once the credentials and the project ID is entered, the system downloads all evaluations and builds sliders to vary transperency. 
+# Geodesign Hub DNA
+This is small visualization tool deconstruct a geodesign in a Geodesign Project. It uses the Geodesign Hub [API](http://www.geodesignsupport.com/section/api/). Once the credentials and the project ID is entered, the system downloads all synthesis data. Different designs and changes among them are shown and also the ability to navigate between
 
 It can be useful to understand how the decision model spatially. 
 
 ![alt text][logo]
 
-[logo]: http://i.imgur.com/gLmvV1q.png "Geodesign Hub Desicion model"
+[logo]: http://i.imgur.com/hqvaHyH.gif "Geodesign Hub Version Explorer"
+
+![alt text][logo2]
+[logo2]: http://i.imgur.com/xVfW0lr.png "Geodesign Hub Version Explorer"
 
 
 
