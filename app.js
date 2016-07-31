@@ -4,7 +4,10 @@ var async = require('async');
 var bodyParser = require('body-parser');
 var app = express();
 
-app.use(express.static(__dirname + '/views'));
+var ejs = require('ejs');
+app.set('view engine', 'ejs');
+
+// app.use(express.static(__dirname + '/views'));
 app.use('/assets', express.static('static'));
 app.use(bodyParser.urlencoded({
     extended: false
@@ -12,7 +15,15 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json())
 
 app.get('/', function(request, response) {
-    response.sendFile('/index.html');
+    var opts = {};
+    if (request.query.apitoken && request.query.projectid) {
+        opts = { 'apitoken': request.query.apitoken, 'projectid': request.query.projectid };
+    } else {
+        opts = { 'apitoken': '0', 'projectid': '0' };
+
+    }
+
+    response.render('gdhdna', opts);
 });
 
 app.post('/post/', function(request, response) {
