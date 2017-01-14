@@ -232,10 +232,12 @@
             synDetails.synAddRemove = sar;
             generateSynChart(syndiagsorted, data.cteams);
             generateSparklines(sar, data.systems, synDetails.diagramslookup);
+            console.log(synDetails)
             generatenegotiationsChart(synDetails.syndiagrams, sar, syndiagsorted, synDetails.diagramslookup, data.cteams, data.diagrams);
         }
 
         function generatenegotiationsChart(syndiagrams, synaddremove, syndiagssorted, diagramslookup, cteams, diagrams) {
+            // function for dynamic sort
             function dynamicSort(property) {
                 var sortOrder = 1;
                 if (property[0] === "-") {
@@ -247,8 +249,8 @@
                     return result * sortOrder;
                 }
             }
+            // syndiagrams = synthesisIDs and a list of diagrams in them diagram id in string
             var sdatalen = syndiagrams.length;
-
             var sd = syndiagssorted;
             // var sd = syndiagssorted.sort(function(a, b) {
             //     // Turn your strings into dates, and then subtract them
@@ -263,7 +265,7 @@
             for (var y = 0; y < sdlen; y++) {
                 tmpalldiagsallsyn = tmpalldiagsallsyn.concat(syndiagrams[y].diagrams);
             }
-            // a list of all the diagrams ever used in all the syntehsi. 
+            // a list of all the diagrams ever used in all the syntehsis. 
             var ad = tmpalldiagsallsyn.filter(onlyUnique); // returns ['a', 1, 2, '1']
             // sort the uniq diagrams by name
             var tmpdiagname = [];
@@ -286,7 +288,7 @@
             var yaxistext = [" "];
             // for all the y axis keep the 
             for (var w = 0; w < alldiagsallsyn.length; w++) {
-                var curUniq = alldiagsallsyn[w];
+                var curUniq = parseInt(alldiagsallsyn[w]);
                 yaxisvals.push(w);
                 yaxistext.push(diagramslookup[curUniq]);
             }
@@ -330,7 +332,7 @@
                 // xaxisval.push(moment(creationdate).format("YYYY-MM-DD HH:MM"));
                 xaxisval.push(synidDesc[cursyn.id]);
                 for (key in tracelist) {
-                    var k = parseInt(key);
+                    var k = key;
                     var seen = (jQuery.inArray(k, curDiags) !== -1);
                     if (seen === false) {
                         tracelist[k]['y'].push(" ");
@@ -345,6 +347,7 @@
                     tracelist[k]['text'].push(diagramslookup[k]);
                 }
             }
+            console.log(tracelist);
             var yaxisdata = [];
             for (key1 in tracelist) {
                 var k1 = parseInt(key1);
@@ -830,7 +833,9 @@
                 humane.log("Submitting request..", {
                     addnCls: 'humane-flatty-info'
                 });
+                
                 promise.done(function(data) {
+                    // console.log(data);
                     if (data.status) {
                         clearExistingHistory();
                         synDataReceivedOK(data);
