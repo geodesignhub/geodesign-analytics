@@ -252,7 +252,7 @@
             // syndiagrams = synthesisIDs and a list of diagrams in them diagram id in string
             var sdatalen = syndiagrams.length;
             var sd = syndiagssorted;
-            console.log(sd);
+            
             // var sd = syndiagssorted.sort(function(a, b) {
             //     // Turn your strings into dates, and then subtract them
             //     // to get a value that is either negative, positive, or zero.
@@ -337,8 +337,8 @@
                     var k = key;
                     var seen = (jQuery.inArray(k, curDiags) !== -1);
                     if (seen === false) {
-                        // tracelist[k]['y'].push(" ");
-                        // tracelist[k]['x'].push(synidDesc[cursyn.id]);
+                        tracelist[k]['y'].push(" ");
+                        tracelist[k]['x'].push(synidDesc[cursyn.id]);
                         // tracelist[k]['color'].push(" ");
                     } else {
                         // var color = getPointColor(k);
