@@ -359,7 +359,8 @@
                     mode: 'markers+lines',
                     hoverinfo: "y",
                     type: 'scatter',
-                    name: tracelist[k1]['text'][0].split("-")[0],
+                    legendgroup: tracelist[k1]['text'][0].split("-")[0],
+                    name: tracelist[k1]['text'][0],
                     marker: {
                         size: 4
                     },
