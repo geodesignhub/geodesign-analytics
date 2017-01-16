@@ -232,7 +232,6 @@
             synDetails.synAddRemove = sar;
             generateSynChart(syndiagsorted, data.cteams);
             generateSparklines(sar, data.systems, synDetails.diagramslookup);
-            console.log(synDetails)
             generatenegotiationsChart(synDetails.syndiagrams, sar, syndiagsorted, synDetails.diagramslookup, data.cteams, data.diagrams);
         }
 
@@ -286,11 +285,11 @@
             }
 
             var yaxisvals = [-1];
-            var yaxistext = [" "];
+            var yaxistext = [""];
             // for all the y axis keep the 
             for (var w = 0; w < alldiagsallsyn.length; w++) {
                 var curUniq = parseInt(alldiagsallsyn[w]);
-                yaxisvals.push(w);
+                yaxisvals.push(alldiagsallsyn[w]);
                 yaxistext.push(diagramslookup[curUniq]);
             }
             
@@ -337,7 +336,7 @@
                     var k = key;
                     var seen = (jQuery.inArray(k, curDiags) !== -1);
                     if (seen === false) {
-                        tracelist[k]['y'].push(" ");
+                        tracelist[k]['y'].push("");
                         tracelist[k]['x'].push(synidDesc[cursyn.id]);
                         // tracelist[k]['color'].push(" ");
                     } else {
