@@ -292,6 +292,7 @@
                 yaxisvals.push(w);
                 yaxistext.push(diagramslookup[curUniq]);
             }
+            
             // for all the diagrams keep a list of the xs, ys and the text.
             var tracelist = {};
             for (var j = 0; j < alldiagsallsyn.length; j++) {
@@ -335,8 +336,8 @@
                     var k = key;
                     var seen = (jQuery.inArray(k, curDiags) !== -1);
                     if (seen === false) {
-                        tracelist[k]['y'].push(" ");
-                        tracelist[k]['x'].push(synidDesc[cursyn.id]);
+                        // tracelist[k]['y'].push(" ");
+                        // tracelist[k]['x'].push(synidDesc[cursyn.id]);
                         // tracelist[k]['color'].push(" ");
                     } else {
                         // var color = getPointColor(k);
@@ -347,7 +348,7 @@
                     tracelist[k]['text'].push(diagramslookup[k]);
                 }
             }
-            console.log(tracelist);
+            
             var yaxisdata = [];
             for (key1 in tracelist) {
                 var k1 = parseInt(key1);
@@ -355,7 +356,7 @@
                     'x': tracelist[k1]['x'],
                     'y': tracelist[k1]['y'],
                     'text': tracelist[k1]['text'],
-                    mode: 'lines+markers',
+                    mode: 'markers+lines',
                     hoverinfo: "y",
                     type: 'scatter',
                     marker: {
@@ -364,7 +365,7 @@
 
                 });
             }
-
+            
             var layout = {
                 hovermode: 'closest',
                 // title: 'Diagrams and Designs',
@@ -377,7 +378,7 @@
                 },
                 showlegend: false,
                 xaxis: {
-                    title: 'Grouped designs by change teams and chronologically ordered',
+                    title: 'Designs chronologically ordered',
                     titlefont: {
                         family: "Raleway",
                         size: 12,
@@ -394,7 +395,7 @@
                     ticktext: xaxisrange,
                     tickangle: 90,
                     // range: [0, xaxisrange],
-                    showticklabels: true,
+                    showticklabels: false,
                 },
                 yaxis: {
                     // title: 'Diagrams',
