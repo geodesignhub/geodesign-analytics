@@ -348,7 +348,7 @@
                     tracelist[k]['text'].push(diagramslookup[k]);
                 }
             }
-            console.log(tracelist);
+            
             var yaxisdata = [];
             for (key1 in tracelist) {
                 var k1 = parseInt(key1);
@@ -357,7 +357,7 @@
                     'y': tracelist[k1]['y'],
                     'text': tracelist[k1]['text'],
                     mode: 'markers+lines',
-                    hoverinfo: "y",
+                    hoverinfo: "all",
                     type: 'scatter',
                     legendgroup: tracelist[k1]['text'][0].split("-")[0],
                     name: tracelist[k1]['text'][0],
@@ -397,7 +397,7 @@
                     ticktext: xaxisrange,
                     tickangle: 90,
                     // range: [0, xaxisrange],
-                    showticklabels: false,
+                    showticklabels: true,
                 },
                 yaxis: {
                     // title: 'Diagrams',
