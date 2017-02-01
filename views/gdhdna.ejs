@@ -98,8 +98,11 @@
         <hr>
         <div class="row">
             <div class="col-md-12">
-                <h2>Final Design Breakdown<small>Freqency of diagrams that made it in the final negotiation</small></h2>
+                <h2>Design Breakdown<small>Freqency of diagrams that made it in the final negotiation</small></h2>
                 <p>The x-axis has all the diagrams that are present in the final design. The y-axis has the number of designs the diagram was used including the final one. The maximum value on y-axis indicates total number of designs saved in the project.</p>
+
+                Choose another design: <select id="syndropdown"></select>
+
                 <div class='chart'>
                     <div id='freqchart'></div>
                 </div>
@@ -206,6 +209,7 @@
             Plotly.newPlot('chart', series, layout);
         }
 
+
         function synDataReceivedOK(data) {
             var ctlen = data.cteams.length;
             for (var x = 0; x < ctlen; x++) {
@@ -213,6 +217,11 @@
                 var color = Colors.random();
                 data.cteams[x].color = color;
             }
+
+            $('#syndropdown').unbind().find('option')
+                .remove()
+                .end();
+
             var diaglen = data.diagrams.length;
             var syslen = data.systems.length;
             for (var z = 0; z < diaglen; z++) {
@@ -233,11 +242,26 @@
             synDetails.syndiagrams = data.syndiagrams;
             synDetails.syns = data.syns;
             synDetails.systems = data.systems;
+
+
             // set up the containers with the cteams. 
             setupCTeamContainers(data.cteams);
             var s = populateCTeamSyn(data.syns, data.syndiagrams, data.cteams);
             var syndiagsorted = s[0];
-            var lastsyn = syndiagsorted[syndiagsorted.length - 1];
+            var lastsynid = syndiagsorted[syndiagsorted.length - 1].id;
+            var synDiagLen = syndiagsorted.length;
+            for (var k = 0; k < synDiagLen; k++) {
+                var curSyn = syndiagsorted[k];
+                $('#syndropdown').append($('<option>', {
+                    value: curSyn.id,
+                    text: curSyn.description
+                }));
+
+            }
+            $('#syndropdown').on('change', function() {
+                generateLastSynFrequency(this.value, syndiagsorted, synDetails.diagramslookup);
+                // alert(this.value);
+            });
             synDetails.ctidsyn = s[1];
             createDiagramsMiniGrid(syndiagsorted, data.systems, synDetails.diagramslookup, data.cteams, synDetails.diagrams);
             var sar = populateAddedRemoved(syndiagsorted, synDetails.diagramslookup);
@@ -245,23 +269,32 @@
             generateSynChart(syndiagsorted, data.cteams);
             generateSparklines(sar, data.systems, synDetails.diagramslookup);
             generatenegotiationsChart(synDetails.syndiagrams, sar, syndiagsorted, synDetails.diagramslookup, data.cteams, data.diagrams);
-            generateLastSynFrequency(lastsyn, syndiagsorted, synDetails.diagramslookup);
+            generateLastSynFrequency(lastsynid, syndiagsorted, synDetails.diagramslookup);
+
         }
 
-        function generateLastSynFrequency(lastsyn, syndiagsorted, diagramslookup) {
+        function generateLastSynFrequency(synid, syndiagsorted, diagramslookup) {
             function isInArray(value, array) {
                 return array.indexOf(value) > -1;
             }
+
+            var finalDesignDiags = [];
+            var synLength = syndiagsorted.length;
             // get all the diagrams in the final design. 
-            var finalDesignDiags = lastsyn.diagrams;
+            for (var t1 = 0; t1 < synLength; t1++) {
+                var curselsyn = syndiagsorted[t1];
+                if (synid === curselsyn.id) {
+                    finalDesignDiags = curselsyn.diagrams;
+                    break;
+                }
+            }
+            var finalDesignDiagLength = finalDesignDiags.length;
             var plotseries = {
                 'x': [],
                 'y': [],
 
             };
             var diagFreqLookup = {};
-            var synLength = syndiagsorted.length;
-            var finalDesignDiagLength = finalDesignDiags.length;
             for (var t = 0; t < finalDesignDiagLength; t++) {
                 // get the first diagram. 
                 var curFinalDiag = finalDesignDiags[t];
@@ -278,41 +311,44 @@
                     if (isInArray(curFinalDiag, currentSynDiagrams)) {
                         diagFreqLookup[curFinalDiag]['frequency'] += 1;
                         diagFreqLookup[curFinalDiag]['synthesisid'].push(curSyn.id);
+                        $('#syndropdown').append($("<li>").text(curSyn.description).val(curSyn.id));
+
                     }
                 }
-            }
-            for (var diagID in diagFreqLookup) {
-                plotseries['y'].push(diagFreqLookup[diagID]['frequency']);
-                plotseries['x'].push(diagramslookup[diagID]);
+                var listitems = [];
+                for (var diagID in diagFreqLookup) {
+                    plotseries['y'].push(diagFreqLookup[diagID]['frequency']);
+                    plotseries['x'].push(diagramslookup[diagID]);
 
 
-            }
 
-            var data = [{
-                type: 'bar',
-                x: plotseries['x'],
-                y: plotseries['y'],
-                marker: {
-                    color: 'rgba(255,153,51,0.6)',
-                    width: 1
                 }
-            }];
+                var data = [{
+                    type: 'bar',
+                    x: plotseries['x'],
+                    y: plotseries['y'],
+                    marker: {
+                        color: 'rgba(255,153,51,0.6)',
+                        width: 1
+                    }
+                }];
 
-            var layout = {
-                yaxis: {
-                    range: [0, synLength],
-                    title: 'Number of designs that this diagram appears',
-                    titlefont: {
-                        family: "Raleway",
-                        size: 12,
-                        color: 'darkgrey'
+                var layout = {
+                    yaxis: {
+                        range: [0, synLength],
+                        title: 'Number of designs that this diagram appears',
+                        titlefont: {
+                            family: "Raleway",
+                            size: 12,
+                            color: 'darkgrey'
+                        },
                     },
-                },
 
-            };
-            Plotly.newPlot('freqchart', data, layout);
-            // check the frequency of the diagrams used  and plot bar chart. 
-            // for all the digrams in the final synthesis, plot when they were started. 
+                };
+                Plotly.newPlot('freqchart', data, layout);
+                // check the frequency of the diagrams used  and plot bar chart. 
+                // for all the digrams in the final synthesis, plot when they were started. 
+            }
         }
 
         function generatenegotiationsChart(syndiagrams, synaddremove, syndiagssorted, diagramslookup, cteams, diagrams) {
