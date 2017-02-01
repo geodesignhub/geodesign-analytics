@@ -77,13 +77,24 @@
         <div class="row">
             <div class="col-md-12">
                 <h2>Diagram Paths <small>Diagrams selected by design teams throughout design process. </small></h2>
-                <p>The y-axis is all the diagrams that are used in designs, sorted by the systems. On the x-axis, are designs in chronological order of saving and also sorted by the change team. The points mean that the diagram was in the design and the joined lines mean that the diagram was present in consecutively saved designs by different independent teams.</p>
+                <p>The y-axis is all the diagrams that are used in designs, sorted by the systems. On the x-axis, are designs in chronological order of saving and also sorted by the change team. The points mean that the diagram was in the design and the
+                    joined lines mean that the diagram was present in consecutively saved designs by different independent teams.</p>
                 <div class='neogotiationchart'>
                     <div id='neogotiationchart'></div>
                 </div>
             </div>
         </div>
         <!-- /.row -->
+        <hr>
+        <div class="row">
+            <div class="col-md-12">
+                <h2>Final Design Breakdown<small>Freqency of diagrams that made it in the final negotiation</small></h2>
+                <p>The frequency number indicates the number of designs the diagram was used. The final number on the x-axis is the number of designs saved in the project.</p>
+                <div class='chart'>
+                    <div id='freqchart'></div>
+                </div>
+            </div>
+        </div>
         <hr>
         <div class="row">
             <div class="col-md-12">
@@ -225,7 +236,7 @@
             setupCTeamContainers(data.cteams);
             var s = populateCTeamSyn(data.syns, data.syndiagrams, data.cteams);
             var syndiagsorted = s[0];
-            var lastsyn =  syndiagsorted[syndiagsorted.length - 1];
+            var lastsyn = syndiagsorted[syndiagsorted.length - 1];
             synDetails.ctidsyn = s[1];
             createDiagramsMiniGrid(syndiagsorted, data.systems, synDetails.diagramslookup, data.cteams, synDetails.diagrams);
             var sar = populateAddedRemoved(syndiagsorted, synDetails.diagramslookup);
@@ -233,9 +244,73 @@
             generateSynChart(syndiagsorted, data.cteams);
             generateSparklines(sar, data.systems, synDetails.diagramslookup);
             generatenegotiationsChart(synDetails.syndiagrams, sar, syndiagsorted, synDetails.diagramslookup, data.cteams, data.diagrams);
+            generateLastSynFrequency(lastsyn, syndiagsorted, synDetails.diagramslookup);
         }
-        function generateLastSynFrequency(lastsyn,syndiagsorted ){
+
+        function generateLastSynFrequency(lastsyn, syndiagsorted, diagramslookup) {
+            function isInArray(value, array) {
+                return array.indexOf(value) > -1;
+            }
             // get all the diagrams in the final design. 
+            var finalDesignDiags = lastsyn.diagrams;
+            var plotseries = {
+                'x': [],
+                'y': [],
+                ;
+            };
+            var diagFreqLookup = {};
+            var synLength = syndiagsorted.length;
+            var finalDesignDiagLength = finalDesignDiags.length;
+            for (var t = 0; t < finalDesignDiagLength; t++) {
+                // get the first diagram. 
+                var curFinalDiag = finalDesignDiags[t];
+                if (curFinalDiag in diagFreqLookup) {} else {
+                    diagFreqLookup[curFinalDiag] = {
+                        'frequency': 0,
+                        'synthesisid': []
+                    };
+                }
+
+                for (var k = 0; k < synLength; k++) {
+                    var curSyn = syndiagsorted[k];
+                    var currentSynDiagrams = curSyn.diagrams;
+                    if (isInArray(curFinalDiag, currentSynDiagrams)) {
+                        diagFreqLookup[curFinalDiag]['frequency'] += 1;
+                        diagFreqLookup[curFinalDiag]['synthesisid'].push(curSyn.id);
+                    }
+                }
+            }
+            for (var diagID in diagFreqLookup) {
+                plotseries['x'].push(diagFreqLookup[diagID]['frequency']);
+                plotseries['y'].push(diagramslookup[diagID]);
+                text: yValue[i],
+
+            }
+
+            var data = [{
+                type: 'bar',
+                x: plotseries['x'],
+                y: plotseries['y'],
+                orientation: 'h',
+                marker: {
+                    color: 'rgba(255,153,51,0.6)',
+                    width: 1
+                }
+            }];
+
+            var layout = {
+                xaxis: {
+                    range: [0, synLength],
+                    title: 'Total Designs Saved in the project',
+                    titlefont: {
+                        family: "Raleway",
+                        size: 12,
+                        color: 'darkgrey'
+                    },
+                },
+
+            };
+            Plotly.newPlot('freqchart', data, layout);
             // check the frequency of the diagrams used  and plot bar chart. 
             // for all the digrams in the final synthesis, plot when they were started. 
         }
@@ -256,7 +331,7 @@
             // syndiagrams = synthesisIDs and a list of diagrams in them diagram id in string
             var sdatalen = syndiagrams.length;
             var sd = syndiagssorted;
-            
+
             // var sd = syndiagssorted.sort(function(a, b) {
             //     // Turn your strings into dates, and then subtract them
             //     // to get a value that is either negative, positive, or zero.
@@ -297,7 +372,7 @@
                 yaxisvals.push(alldiagsallsyn[w]);
                 yaxistext.push(diagramslookup[curUniq]);
             }
-            
+
             // for all the diagrams keep a list of the xs, ys and the text.
             var tracelist = {};
             for (var j = 0; j < alldiagsallsyn.length; j++) {
@@ -353,7 +428,7 @@
                     tracelist[k]['text'].push(diagramslookup[k]);
                 }
             }
-            
+
             var yaxisdata = [];
             for (key1 in tracelist) {
                 var k1 = parseInt(key1);
@@ -372,7 +447,7 @@
 
                 });
             }
-            
+
             var layout = {
                 hovermode: 'closest',
                 // title: 'Diagrams and Designs',
@@ -752,7 +827,7 @@
                     },
                 });
             }
-            
+
             return [sd, ctidsyn];
         }
 
@@ -842,7 +917,7 @@
                 humane.log("Submitting request..", {
                     addnCls: 'humane-flatty-info'
                 });
-                
+
                 promise.done(function(data) {
                     // console.log(data);
                     if (data.status) {
@@ -900,16 +975,15 @@
             return grid;
         }
     </script>
-        <script>
-        var apitoken = "<%= apitoken  %>";  //var test is now assigned to getTest which will only work on browsers
-        var projectid ="<%= projectid %>";  //var test is now assigned to getTest which will only work on browsers  
-        $(function(){
-            if (apitoken !=="0" && projectid !=="0")
-                {
-                    $("#apikey").val(apitoken);
-                    $("#projectid").val(projectid);
-                    submitPost(apitoken,projectid);
-                }    
+    <script>
+        var apitoken = "<%= apitoken  %>"; //var test is now assigned to getTest which will only work on browsers
+        var projectid = "<%= projectid %>"; //var test is now assigned to getTest which will only work on browsers  
+        $(function() {
+            if (apitoken !== "0" && projectid !== "0") {
+                $("#apikey").val(apitoken);
+                $("#projectid").val(projectid);
+                submitPost(apitoken, projectid);
+            }
         });
     </script>
 </body>

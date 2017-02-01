@@ -110,7 +110,6 @@ app.post('/post/', function(request, response) {
                     return done(null, JSON.parse(body));
                 });
             }, function(err, results) {
-
                 if (err) return response.sendStatus(500);
                 response.contentType('application/json');
 
