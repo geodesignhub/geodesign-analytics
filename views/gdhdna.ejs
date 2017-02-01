@@ -52,6 +52,15 @@
         <div class="row">
             <div class="col-sm-12">
                 <div class="row">
+                    <div class="col-md-12">
+                        <h2>Design Timelines <small>When different design teams saved their designs.</small></h2>
+                        <div class='chart'>
+                            <div id='chart'></div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.row -->
+                <div class="row">
                     <div class="col-lg-12">
                         <p class="small">This is a <a href="http://www.geodesignsupport.com/section/api/" target="_blank">Geodesign Hub API</a> plugin to visually demonstrate the process of design evolution. Please Enter your Geodesign Hub <a href="https://www.geodesignhub.com/api/token/"
                                 target="_blank">API Token</a> and Project ID to populate project details. The code for this plugin is located on a <a href="https://github.com/hrishiballal/geodesign-dna/">GitHub repository</a>.
@@ -77,8 +86,8 @@
         <div class="row">
             <div class="col-md-12">
                 <h2>Diagram Paths <small>Diagrams selected by design teams throughout design process. </small></h2>
-                <p>The y-axis is all the diagrams that are used in designs, sorted by the systems. On the x-axis, are designs in chronological order of saving and also sorted by the change team. The points mean that the diagram was in the design and the
-                    joined lines mean that the diagram was present in consecutively saved designs by different independent teams.</p>
+                <p>The y-axis is all the diagrams that are used in designs, sorted by the systems. On the x-axis, are designs in chronological order of saving the first design saved is on the left and last saved design is the right most value of the x-axis.
+                    A point means that the diagram was in the design and the joined lines mean that the diagram was present in consecutively saved designs by different independent teams.</p>
                 <div class='neogotiationchart'>
                     <div id='neogotiationchart'></div>
                 </div>
@@ -96,15 +105,6 @@
             </div>
         </div>
         <hr>
-        <div class="row">
-            <div class="col-md-12">
-                <h2>Design Timelines <small>When different design teams saved their designs.</small></h2>
-                <div class='chart'>
-                    <div id='chart'></div>
-                </div>
-            </div>
-        </div>
-        <!-- /.row -->
         <hr>
         <h2>Design Evolution <small>Change teams and how their design evolved.</small></h2>
         <div id="ctdetails">
