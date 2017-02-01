@@ -281,8 +281,8 @@
                 }
             }
             for (var diagID in diagFreqLookup) {
-                plotseries['x'].push(diagFreqLookup[diagID]['frequency']);
-                plotseries['y'].push(diagramslookup[diagID]);
+                plotseries['y'].push(diagFreqLookup[diagID]['frequency']);
+                plotseries['x'].push(diagramslookup[diagID]);
 
 
             }
@@ -291,7 +291,6 @@
                 type: 'bar',
                 x: plotseries['x'],
                 y: plotseries['y'],
-                orientation: 'h',
                 marker: {
                     color: 'rgba(255,153,51,0.6)',
                     width: 1
@@ -299,7 +298,7 @@
             }];
 
             var layout = {
-                xaxis: {
+                yaxis: {
                     range: [0, synLength],
                     title: 'Total Designs Saved in the project',
                     titlefont: {
