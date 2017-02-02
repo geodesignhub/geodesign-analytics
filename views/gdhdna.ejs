@@ -94,7 +94,11 @@
                 </div>
             </div>
         </div>
-        <!-- /.row -->
+        <!-- /.row -->       
+         <hr>
+        <h2>Design Pulse <small>Changes to the design made by the team.</small></h2>
+        <div id="ctpulsedetails">
+        </div>
         <hr>
         <h2>Design Evolution <small>Change teams and how their design evolved.</small></h2>
         <div id="ctdetails">
@@ -116,6 +120,7 @@
     <script type="text/javascript">
         function clearExistingHistory() {
             $("#ctdetails").html("");
+            $("#ctpulsedetails").html("");
         }
         var synDetails = function() {
             return {
@@ -256,25 +261,29 @@
                 var cteam = cteams[k];
                 addCteamAdds[cteam.id] = {
                     'x': [], // in x add synthesis name
-                    'y': [] // in y adds for the synthesis
+                    'y': [], // in y adds for the synthesis
+                    'name':cteam.title
                 };
                 addCteamRemoves[cteam.id] = {
                     'x': [], // in x synthesis anme
-                    'y': [] // in y removes for synthesis
+                    'y': [],// in y removes for synthesis
+                    'name':cteam.title
                 };
 
             }
+            var counter =0;
             for (var r = 0; r < syndiagsorted.length; r++) {
                 var curSyn = syndiagsorted[r];
                 var curSynID = curSyn.id;
                 var cteamID = curSyn.cteamid;
-                addCteamAdds[cteamID]['x'].push('');
-                addCteamRemoves[cteamID]['x'].push('');
+                addCteamAdds[cteamID]['x'].push(counter);
+                addCteamRemoves[cteamID]['x'].push(counter);
+                counter = counter +1;
                 for (var x = 0; x < synaddremove.length; x++) {
                     var tmpar = synaddremove[x];
                     if (curSynID === tmpar.id) {
                         addCteamAdds[cteamID]['y'].push(tmpar.adds.length);
-                        addCteamRemoves[cteamID]['y'].push(tmpar.removes.length);
+                        addCteamRemoves[cteamID]['y'].push((-1 * tmpar.removes.length));
                         break;
                         // tmpar.adds
                         // tmpar.removes;
@@ -288,23 +297,49 @@
                     x: addCteamAdds[ctid]['x'],
                     y: addCteamAdds[ctid]['y'],
                     fill: 'tozeroy',
-                    type: 'scatter'
+                    type: 'scatter',
+                    mode: 'none', 
+                    type: 'scatter',
+                     mode: 'line',
+                    line: {
+                        color: 'rgb(85,165,50)',
+                        width: 2
+                    }
                 };
 
                 var removestrace = {
                     x: addCteamRemoves[ctid]['x'],
                     y: addCteamRemoves[ctid]['y'],
                     fill: 'tozeroy',
-                    type: 'scatter'
+                    type: 'scatter',
+                     mode: 'line',
+                    line: {
+                        color: 'rgb(189,44,0)',
+                        width: 2
+                    }
                 };
-
-                // var layout = {
-                //     title: 'Additions and Deletions'
-                // };
+                // console.log(addCteamAdds)
+                var layout = {
+                    title: addCteamAdds[ctid]['name'],
+                    // title: 'Additions and Deletions' 
+                    height:300,
+                    showlegend: false,
+                    yaxis: {
+                    title: 'Additions in green and deletions in red',
+                    titlefont: {
+                        family: "Raleway",
+                        size: 12,
+                        color: 'darkgrey'
+                    },
+                    },
+                    xaxis: {
+                        showticklabels: false,
+                    }
+                };
 
                 var data = [addstrace, removestrace];
                 var myDiv = 'pulsecont-' + ctid;
-                Plotly.newPlot(myDiv, data);
+                Plotly.newPlot(myDiv, data, layout);
             }
 
         }
@@ -410,7 +445,7 @@
                     var k = key;
                     var seen = (jQuery.inArray(k, curDiags) !== -1);
                     if (seen === false) {
-                        tracelist[k]['y'].push("");
+                        tracelist[k]['y'].push(null);
                         tracelist[k]['x'].push(synidDesc[cursyn.id]);
                         // tracelist[k]['color'].push(" ");
                     } else {
@@ -856,9 +891,23 @@
         function setupCTeamContainers(cteamdata) {
             var ctlen = cteamdata.length;
             var row = 0;
+            var row1 = 0;
             for (var x = 0; x < ctlen; x++) {
                 var curCT = cteamdata[x];
                 var curctid = curCT['id'];
+                if (row1 === 0 || ((row % 3) == 0)) {
+                    row1 += 1;
+                    $('<div/>', {
+                        id: 'pulserow-' + row1,
+                        class: 'row margin-b-2'
+                    }).appendTo("#ctpulsedetails");
+                }
+                
+                $('<div/>', {
+                    id: 'pulsecont-' + curctid,
+                    class: 'col-sm-4 col-md-4 col-border'
+                }).appendTo("#pulserow-" + row1);
+
                 if (row === 0 || ((row % 6) == 0)) {
                     row += 1;
                     $('<div/>', {
@@ -874,11 +923,6 @@
                     html: "<div class='square' style='background-color:" + curCT['color']['rgb'] + ";'></div> " + curCT['title']
                 }).appendTo("#cteam-" + curctid);
                 $('<hr>', {}).appendTo("#cteam-" + curctid);
-
-                $('<div/>', {
-                    class: 'pulsecont',
-                    id: 'pulsecont-' + curctid
-                }).appendTo("#cteam-" + curctid);
 
                 $('<div/>', {
                     class: 'gridcont',
