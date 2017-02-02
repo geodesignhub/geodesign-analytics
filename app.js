@@ -37,7 +37,6 @@ app.post('/post/', function(request, response) {
     var cteams = baseurl + projectid + '/cteams/';
     var allsyns = [];
     var URLS = [systems, diagrams, cteams];
-
     async.map(URLS, function(url, done) {
         req({
             url: url,
@@ -52,7 +51,6 @@ app.post('/post/', function(request, response) {
             return done(null, JSON.parse(body));
         });
     }, function(err, results) {
-
         if (err) return response.sendStatus(500);
         // get the cteams
         systems = results[0];
