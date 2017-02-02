@@ -4,9 +4,9 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Geodesign DNA</title>
+    <title>Geodesign Analytics</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="Description" lang="en" content="Geodesign Hub Synthesis Visualizer">
+    <meta name="Description" lang="en" content="Geodesign Hub Project Analytics">
     <meta name="author" content="Hrishikesh Ballal">
     <meta name="robots" content="index, follow">
     <!-- icons -->
@@ -39,7 +39,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#">Geodesign DNA</a>
+                <a class="navbar-brand" href="#">Geodesign Analytics</a>
             </div>
             <!-- /.navbar-header -->
             <!-- /.navbar-collapse -->
@@ -54,7 +54,7 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <p class="small">This is a <a href="http://www.geodesignsupport.com/section/api/" target="_blank">Geodesign Hub API</a> plugin to visually demonstrate the process of design evolution. Please Enter your Geodesign Hub <a href="https://www.geodesignhub.com/api/token/"
-                                target="_blank">API Token</a> and Project ID to populate project details. The code for this plugin is located on a <a href="https://github.com/hrishiballal/geodesign-dna/">GitHub repository</a>.
+                                target="_blank">API Token</a> and Project ID to populate project details. The code for this plugin is located on a <a href="https://github.com/hrishiballal/geodesign-analytics/">GitHub repository</a>.
                         </p>
                     </div>
                 </div>
@@ -152,7 +152,7 @@
 
             for (var x1 = 0; x1 < sdatalen; x1++) {
                 var cursyn = syndata[x1];
-                var date = moment(cursyn['creationdate']).format("YYYY-MM-DD HH:MM");
+                var date = moment(cursyn['creationdate']).format("YYYY-MM-DD HH:MM:SS");
                 var cteamid = cursyn['cteamid'];
                 var desc = cursyn['description'];
                 var index = cteams.findIndex(x => x.id == cteamid);
