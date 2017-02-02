@@ -1,5 +1,5 @@
-# Geodesign DNA
-This is small visualization tool deconstruct a geodesign in a Geodesign Project. It uses the Geodesign Hub [API](http://www.geodesignsupport.com/section/api/). Once the credentials and the project ID is entered, the system downloads all synthesis data. Different designs and changes among them are shown and also the ability to navigate between different versions of a design and different designs. 
+# Geodesign Analytcis
+This is small visualization tool deconstruct a geodesign in a Geodesign Project. It uses the Geodesign Hub [API](https://www.geodesignhub.com/api/). Once the credentials and the project ID is entered, the system downloads all synthesis data. Different designs and changes among them are shown and also the ability to navigate between different versions of a design and different designs. 
 
 ![alt text][logo]
 
