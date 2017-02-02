@@ -425,3 +425,8 @@ ul.input-list li {
     font-weight: bold;
     color: red;
 }
+
+.pulsecont {
+    height: 400px;
+    width: 160px;
+}

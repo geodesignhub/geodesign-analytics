@@ -244,9 +244,70 @@
             generateSynChart(syndiagsorted, data.cteams);
             generateSparklines(sar, data.systems, synDetails.diagramslookup);
             generatenegotiationsChart(synDetails.syndiagrams, sar, syndiagsorted, synDetails.diagramslookup, data.cteams, data.diagrams);
-
+            generateCTPulse(sar, syndiagsorted, data.cteams);
         }
 
+        function generateCTPulse(synaddremove, syndiagsorted, cteams) {
+            // console.log(synaddremove, syndiagsorted, cteams);
+            var addCteamAdds = {};
+            var addCteamRemoves = {};
+
+            for (var k = 0; k < cteams.length; k++) {
+                var cteam = cteams[k];
+                addCteamAdds[cteam.id] = {
+                    'x': [], // in x add synthesis name
+                    'y': [] // in y adds for the synthesis
+                };
+                addCteamRemoves[cteam.id] = {
+                    'x': [], // in x synthesis anme
+                    'y': [] // in y removes for synthesis
+                };
+
+            }
+            for (var r = 0; r < syndiagsorted.length; r++) {
+                var curSyn = syndiagsorted[r];
+                var curSynID = curSyn.id;
+                var cteamID = curSyn.cteamid;
+                addCteamAdds[cteamID]['x'].push('');
+                addCteamRemoves[cteamID]['x'].push('');
+                for (var x = 0; x < synaddremove.length; x++) {
+                    var tmpar = synaddremove[x];
+                    if (curSynID === tmpar.id) {
+                        addCteamAdds[cteamID]['y'].push(tmpar.adds.length);
+                        addCteamRemoves[cteamID]['y'].push(tmpar.removes.length);
+                        break;
+                        // tmpar.adds
+                        // tmpar.removes;
+                    }
+                }
+            }
+            // console.log(addCteamAdds);
+            // console.log(addCteamRemoves);
+            for (var ctid in addCteamAdds) {
+                var addstrace = {
+                    x: addCteamAdds[ctid]['x'],
+                    y: addCteamAdds[ctid]['y'],
+                    fill: 'tozeroy',
+                    type: 'scatter'
+                };
+
+                var removestrace = {
+                    x: addCteamRemoves[ctid]['x'],
+                    y: addCteamRemoves[ctid]['y'],
+                    fill: 'tozeroy',
+                    type: 'scatter'
+                };
+
+                // var layout = {
+                //     title: 'Additions and Deletions'
+                // };
+
+                var data = [addstrace, removestrace];
+                var myDiv = 'pulsecont-' + ctid;
+                Plotly.newPlot(myDiv, data);
+            }
+
+        }
 
         function generatenegotiationsChart(syndiagrams, synaddremove, syndiagssorted, diagramslookup, cteams, diagrams) {
             // function for dynamic sort
@@ -815,6 +876,11 @@
                 $('<hr>', {}).appendTo("#cteam-" + curctid);
 
                 $('<div/>', {
+                    class: 'pulsecont',
+                    id: 'pulsecont-' + curctid
+                }).appendTo("#cteam-" + curctid);
+
+                $('<div/>', {
                     class: 'gridcont',
                     id: 'gridcont-' + curctid
                 }).appendTo("#cteam-" + curctid);
@@ -826,7 +892,6 @@
                 $('<hr>', {}).appendTo("#cteam-" + curctid);
             }
         }
-
 
         function submitProjectDetails() {
             var apikey = $("#apikey").val();
