@@ -58,7 +58,7 @@
                         </p>
                     </div>
                 </div>
-                <ul class="input-list style-2 clearfix">
+                <ul style="display:none;" class="input-list style-2 clearfix">
                     <li>
                         <input type="text" id="apikey" placeholder="Enter API Key">
                     </li>
@@ -94,8 +94,8 @@
                 </div>
             </div>
         </div>
-        <!-- /.row -->       
-         <hr>
+        <!-- /.row -->
+        <hr>
         <h2>Design Pulse <small>Changes to the design made by the team.</small></h2>
         <div id="ctpulsedetails">
         </div>
@@ -262,23 +262,23 @@
                 addCteamAdds[cteam.id] = {
                     'x': [], // in x add synthesis name
                     'y': [], // in y adds for the synthesis
-                    'name':cteam.title
+                    'name': cteam.title
                 };
                 addCteamRemoves[cteam.id] = {
                     'x': [], // in x synthesis anme
-                    'y': [],// in y removes for synthesis
-                    'name':cteam.title
+                    'y': [], // in y removes for synthesis
+                    'name': cteam.title
                 };
 
             }
-            var counter =0;
+            var counter = 0;
             for (var r = 0; r < syndiagsorted.length; r++) {
                 var curSyn = syndiagsorted[r];
                 var curSynID = curSyn.id;
                 var cteamID = curSyn.cteamid;
                 addCteamAdds[cteamID]['x'].push(counter);
                 addCteamRemoves[cteamID]['x'].push(counter);
-                counter = counter +1;
+                counter = counter + 1;
                 for (var x = 0; x < synaddremove.length; x++) {
                     var tmpar = synaddremove[x];
                     if (curSynID === tmpar.id) {
@@ -298,9 +298,9 @@
                     y: addCteamAdds[ctid]['y'],
                     fill: 'tozeroy',
                     type: 'scatter',
-                    mode: 'none', 
+                    mode: 'none',
                     type: 'scatter',
-                     mode: 'line',
+                    mode: 'line',
                     line: {
                         color: 'rgb(85,165,50)',
                         width: 2
@@ -312,7 +312,7 @@
                     y: addCteamRemoves[ctid]['y'],
                     fill: 'tozeroy',
                     type: 'scatter',
-                     mode: 'line',
+                    mode: 'line',
                     line: {
                         color: 'rgb(189,44,0)',
                         width: 2
@@ -322,15 +322,15 @@
                 var layout = {
                     title: addCteamAdds[ctid]['name'],
                     // title: 'Additions and Deletions' 
-                    height:300,
+                    height: 300,
                     showlegend: false,
                     yaxis: {
-                    title: 'Additions in green and deletions in red',
-                    titlefont: {
-                        family: "Raleway",
-                        size: 12,
-                        color: 'darkgrey'
-                    },
+                        title: 'Additions in green and deletions in red',
+                        titlefont: {
+                            family: "Raleway",
+                            size: 12,
+                            color: 'darkgrey'
+                        },
                     },
                     xaxis: {
                         showticklabels: false,
@@ -902,7 +902,7 @@
                         class: 'row margin-b-2'
                     }).appendTo("#ctpulsedetails");
                 }
-                
+
                 $('<div/>', {
                     id: 'pulsecont-' + curctid,
                     class: 'col-sm-4 col-md-4 col-border'
