@@ -55,10 +55,11 @@
                     <div class="col-lg-12">
                         <p class="small">This is a <a href="https://www.geodesignhub.com/api/" target="_blank">Geodesign Hub API</a> plugin to visually demonstrate the process of design. This plugin is free and open source and the code for this plugin is located on a
                             <a href="https://github.com/hrishiballal/geodesign-analytics/">GitHub repository</a>.
-                        </p>
+                        </p><br>
                     </div>
                 </div>
-                <ul style="display:none;" class="input-list style-2 clearfix">
+                <div id="apicont" class="hide">
+                <ul class="input-list style-2 clearfix">
                     <li>
                         <input type="text" id="apikey" placeholder="Enter API Key">
                     </li>
@@ -70,6 +71,7 @@
                         <button type="submit" class="button" onclick="submitProjectDetails()">Get Synthesis Data</button>
                     </li>
                 </ul>
+            </div>
             </div>
         </div>
         <!-- /.row -->
@@ -1026,6 +1028,9 @@
                 $("#projectid").val(projectid);
                 submitPost(apitoken, projectid);
             }
+            else{
+                $("#apicont").removeClass('hide');
+            }   
         });
     </script>
 </body>

@@ -20,7 +20,6 @@ app.get('/', function(request, response) {
         opts = { 'apitoken': request.query.apitoken, 'projectid': request.query.projectid };
     } else {
         opts = { 'apitoken': '0', 'projectid': '0' };
-
     }
 
     response.render('gdhdna', opts);
