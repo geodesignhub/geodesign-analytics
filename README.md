@@ -2,14 +2,15 @@
 This is small visualization tool deconstruct a geodesign in a Geodesign Project. It uses the Geodesign Hub [API](https://www.geodesignhub.com/api/). Once the credentials and the project ID is entered, the system downloads all synthesis data. Different designs and changes among them are shown and also the ability to navigate between different versions of a design and different designs. 
 
 ![alt text][logo]
-
 [logo]: http://i.imgur.com/hqvaHyH.gif "Geodesign Hub Version Explorer"
 
+## Design Evolution
 ![alt text][logo2]
 [logo2]: http://i.imgur.com/xVfW0lr.png "Geodesign Hub Version Explorer"
 
-
-
+## Design Pulse
+![alt text][logo3]
+[logo3]: http://i.imgur.com/O1zSBSz.png "Geodesign Hub Version Explorer"
 
 ---
 ### Licence
