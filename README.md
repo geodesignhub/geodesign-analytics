@@ -1,5 +1,5 @@
 # Geodesign Analytics
-How do you improve a Geodesign project? How do you deconstruct a design? How to identify how the social dynamics of a change team work? Who is the most effective at negotiations. This is visualization tool deconstruct a geodesign in a geodesign Project. It uses the [Geodesign Hub API](https://www.geodesignhub.com/api/) to download the synthesis information and analyzes it providing important information on performance of the participants in a workshop.  
+How do you improve a Geodesign project? How do you deconstruct a design? How to identify how the social dynamics of a change team work? Who is the most effective at negotiations. This is visualization tool deconstruct a geodesign in a geodesign project. It uses the [Geodesignhub API](https://www.geodesignhub.com/api/) to download the design information and analyzes it providing important information on performance of the participants in a workshop.  
 
 ### Adding the plugin
 The plugin can be added to a project through the project administration panels.
