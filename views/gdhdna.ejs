@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Geodesign Analytics</title>
+    <title>Geodesignhub Analytics</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="Description" lang="en" content="Geodesignhub Project Analytics">
     <meta name="author" content="Geodesignhub">
@@ -63,7 +63,7 @@
 
         <div class="row">
             <div class="col-md-12">
-                <h2>Design Timelines <small>When different design teams saved their designs.</small></h2>
+                <h2>Design Timelines <small>A timeline of when different teams saved their designs, the first design saved is on the left, the last one saved is on the right. </small></h2>
                 <div class='chart'>
                     <div id='chart'></div>
                 </div>
@@ -74,8 +74,7 @@
         <div class="row">
             <div class="col-md-12">
                 <h2>Diagram Paths <small>Diagrams selected by design teams throughout design process. </small></h2>
-                <p>The y-axis is all the diagrams that are used in designs, grouped by systems. On the x-axis, designs are in chronological order of saving the first design saved in the project is on the left and last saved design is the right most value.
-                    A point means that the diagram was in the design and the joined lines mean that the diagram was present in consecutively saved designs by different independent teams.</p>
+                <p>The y-axis is all the diagrams that are used in designs, grouped by systems. On the x-axis, designs are in chronological order of saving the first design saved in the project is on the left and last saved design is the right most value. A point means that the diagram was in the design and the joined lines mean that the diagram was present in consecutively saved designs by different independent teams.</p>
                 <div class='neogotiationchart'>
                     <div id='neogotiationchart'></div>
                 </div>
@@ -196,9 +195,9 @@
                 data.cteams[x].color = color;
             }
 
-            $('#syndropdown').unbind().find('option')
-                .remove()
-                .end();
+            // $('#syndropdown').unbind().find('option')
+            //     .remove()
+            //     .end();
 
             var diaglen = data.diagrams.length;
             var syslen = data.systems.length;
