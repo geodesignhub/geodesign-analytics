@@ -53,7 +53,7 @@
             <div class="col-sm-12">
                 <div class="row">
                     <div class="col-lg-12">
-                        <p class="small">This is a <a href="https://www.geodesignhub.com/api/" target="_blank">Geodesignhub API</a> plugin to visually demonstrate the process of design. This plugin is free and open source and the code for this plugin is located on a <a href="https://github.com/geodesignhub/geodesign-analytics">GitHub repository</a>.
+                        <p class="small">This is a <a href="https://www.geodesignhub.com/api/" target="_blank">Geodesignhub API</a> plugin to visually demonstrate the process of design. It downloads synthesis and diagram information data from the project and produces visualization for deeper analysis. This plugin is free and open source and the code for this plugin is located on a <a href="https://github.com/geodesignhub/geodesign-analytics">GitHub repository</a>.
                         </p><br>
                     </div>
                 </div>
@@ -61,6 +61,30 @@
         </div>
         <!-- /.row -->
 
+        <div class="row">
+            <div class="col-md-12">
+                <h2>Contribution summary <small>Time when diagrams were added and by whom</small></h2>
+                <br>
+                <p class="lead" id="contribution_summary"></p>       
+                <hr>
+                <div class="col-md-4">
+                             
+                    <h4>Top five Contributors</h4>
+                    <p class="lead" id="member_contributions"></p>
+                    <br>
+                    
+                </div>
+                <div class="col-md-8">
+                    
+                    <div class='diagram_chart'>
+                        <h4>Diagrams and systems</h4>
+                       
+                        <div id='diagram_chart'></div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
         <div class="row">
             <div class="col-md-12">
                 <h2>Design Timelines <small>A timeline of when different teams saved their designs</small></h2>
@@ -74,7 +98,7 @@
         <hr>
         <div class="row">
             <div class="col-md-12">
-                <h2>Diagram Paths <small>Diagrams selected by design teams throughout design process. </small></h2>
+                <h2>Diagram Paths <small>Diagrams selected by design teams throughout design process.</small></h2>
                 <p>The y-axis is all the diagrams that are used in designs, grouped by systems. On the x-axis, designs are in chronological order of saving the first design saved in the project is on the left and last saved design is the right most value. A point means that the diagram was in the design and the joined lines mean that the diagram was present in consecutively saved designs by different independent teams.</p>
                 <div class='neogotiationchart'>
                     <div id='neogotiationchart'></div>
@@ -220,7 +244,8 @@
             synDetails.syndiagrams = data.syndiagrams;
             synDetails.syns = data.syns;
             synDetails.systems = data.systems;
-
+            synDetails.members = data.members['members'];
+            populateContributionSummary(data.diagrams, data.systems, data.members['members']);
 
             // set up the containers with the cteams. 
             setupCTeamContainers(data.cteams);
@@ -237,6 +262,61 @@
             generateSparklines(sar, data.systems, synDetails.diagramslookup);
             generatenegotiationsChart(synDetails.syndiagrams, sar, syndiagsorted, synDetails.diagramslookup, data.cteams, data.diagrams);
             generateCTPulse(sar, syndiagsorted, data.cteams);
+            
+        }
+        function populateContributionSummary(diagrams, systems, members) {
+            const num_members = members.length;
+            const num_diagrams = diagrams.length;
+            const contribution_text = '<b>'+num_diagrams + " diagrams</b> from <b>"+ num_members + " participants</b>";
+            $("#contribution_summary").html(contribution_text);
+
+            const authors = diagrams.map(x =>x.author);
+            var counts = {};
+            authors.forEach(function(x) { counts[x] = (counts[x] || 0)+1; });
+
+            
+            var sortable = [];
+            for (var author in counts) {
+                sortable.push([author, counts[author]]);
+            }
+
+            let reversed_sort = sortable.sort(function(a, b) {
+                return a[1] - b[1];
+            });
+            reversed_sort.reverse();
+            var contributor_list = '<ul>'
+            for (let s_index = 0; s_index < reversed_sort.length; s_index++) {
+                if(s_index <= 4){
+                const element = reversed_sort[s_index];
+                contributor_list += '<li><b>'+element[0] +'</b> with '+ element[1]+' diagrams</li>';
+                }
+                else{
+                    break;
+                }
+                
+            }
+            contributor_list += '</ul>';
+            $("#member_contributions").html(contributor_list);
+
+            var all_systems_data = {};
+            for (let s_index = 0; s_index < systems.length; s_index++) {
+                const cur_system = systems[s_index];
+                all_systems_data[cur_system.id] = {'x':[], 'y':[],   mode: 'lines+markers', type: 'scatter', 'name':cur_system.sysname,'marker': {'color':cur_system.syscolor}, 'id':cur_system.id};               
+            }
+
+            for (let d_index = 0; d_index < diagrams.length; d_index++) {
+                const c_diagram = diagrams[d_index];
+                const created_at = moment(c_diagram.created_at);
+                all_systems_data[c_diagram.sysid]['x'].push(created_at.toISOString());
+                all_systems_data[c_diagram.sysid]['y'].push(c_diagram.rank);               
+                
+            }
+            var all_plot_data =[];
+            for (var cur_plot in all_systems_data){
+                all_plot_data.push(all_systems_data[cur_plot]);
+            }
+          
+            Plotly.newPlot('diagram_chart', all_plot_data);
         }
 
         function generateCTPulse(synaddremove, syndiagsorted, cteams) {
@@ -937,7 +1017,7 @@
                     type: 'POST'
                 });
 
-                humane.log("Submitting request..", {
+                humane.log("Querying project data..", {
                     addnCls: 'humane-flatty-info'
                 });
 
@@ -946,11 +1026,11 @@
                     if (data.status) {
                         clearExistingHistory();
                         synDataReceivedOK(data);
-                        humane.log("Synthesis Data populated.", {
+                        humane.log("Project Data populated", {
                             addnCls: 'humane-flatty-success'
                         });
                     } else {
-                        humane.log("Error in getting synthesis data. Please check your project id and credentials.", {
+                        humane.log("Error in getting project data. Please contact your adminstrator.", {
                             addnCls: 'humane-flatty-error'
                         });
 

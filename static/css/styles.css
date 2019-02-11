@@ -98,6 +98,11 @@ h4 {
     margin: 0px auto;
     text-align: center;
 }
+#diagram_chart {
+    height: 380px;
+    margin: 0px auto;
+    text-align: center;
+}
 
 #neogotiationchart {
     height: 1000px;

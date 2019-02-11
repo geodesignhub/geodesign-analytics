@@ -1,5 +1,5 @@
 {
-    "name": "geodesigndna",
+    "name": "geodesign-analytics",
     "version": "1.0.0",
     "description": "A Geodesign Hub API experiment to help visualize evolution of a synthetic design and negotiations.",
     "main": "app.js",
@@ -8,19 +8,19 @@
     },
     "repository": {
         "type": "git",
-        "url": "https://github.com/hrishiballal/geodesign-dna/"
+        "url": "https://github.com/geodesignhub/geodesign-analytics"
     },
     "keywords": [
         "Geodesign",
         "Hub"
     ],
-    "author": "Hrishikesh Ballal",
+    "author": "Geodesignhub",
     "license": "MIT",
     "dependencies": {
-        "express": "^4.13.4",
-        "body-parser": "^1.15.1",
-        "request": "^2.72.0",
         "async": "^1.5.2",
-        "ejs": "^2.5.1"
+        "body-parser": "^1.15.1",
+        "ejs": "^2.5.1",
+        "express": "^4.16.4",
+        "request": "^2.72.0"
     }
 }

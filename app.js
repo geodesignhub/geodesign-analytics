@@ -27,15 +27,17 @@ app.get('/', function(request, response) {
 
 app.post('/post/', function(request, response) {
     var baseurl = 'https://www.geodesignhub.com/api/v1/projects/';
-    // var baseurl = 'http://local.dev:8000/api/v1/projects/';
+    // var baseurl = 'http://local.test:8000/api/v1/projects/';
     var apikey = request.body.apikey;
     var projectid = request.body.projectid;
     var cred = "Token " + apikey;
     var systems = baseurl + projectid + '/systems/';
     var diagrams = baseurl + projectid + '/diagrams/';
     var cteams = baseurl + projectid + '/cteams/';
+    var members = baseurl + projectid + '/members/';
+
     var allsyns = [];
-    var URLS = [systems, diagrams, cteams];
+    var URLS = [systems, diagrams, cteams, members];
     async.map(URLS, function(url, done) {
         req({
             url: url,
@@ -55,6 +57,7 @@ app.post('/post/', function(request, response) {
         systems = results[0];
         diagrams = results[1];
         cteams = results[2];
+        members = results[3];
         var ctlen = cteams.length;
         var ctURLS = [];
         for (var x = 0; x < ctlen; x++) {
@@ -90,7 +93,6 @@ app.post('/post/', function(request, response) {
                     var cturl = baseurl + projectid + '/cteams/' + cteamid + '/' + synID + '/diagrams/';
                     synURLs.push(cturl);
                 }
-
             }
 
             async.map(synURLs, function(url, done) {
@@ -116,7 +118,8 @@ app.post('/post/', function(request, response) {
                     "diagrams": diagrams,
                     "systems": systems,
                     "cteams": cteams,
-                    "syns": allsyns
+                    "syns": allsyns,
+                    "members": members
                 });
             });
         });
