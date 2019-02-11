@@ -306,8 +306,8 @@
 
             for (let d_index = 0; d_index < diagrams.length; d_index++) {
                 const c_diagram = diagrams[d_index];
-                const created_at = moment(c_diagram.created_at);
-                all_systems_data[c_diagram.sysid]['x'].push(created_at.toISOString());
+                const created_at = moment(c_diagram.created_at).format("YYYY-MM-DD HH:MM:SS");;
+                all_systems_data[c_diagram.sysid]['x'].push(created_at);
                 all_systems_data[c_diagram.sysid]['y'].push(c_diagram.rank);               
                 
             }
