@@ -301,7 +301,7 @@
             var all_systems_data = {};
             for (let s_index = 0; s_index < systems.length; s_index++) {
                 const cur_system = systems[s_index];
-                all_systems_data[cur_system.id] = {'x':[], 'y':[],   mode: 'lines+markers', type: 'scatter', 'name':cur_system.sysname,'marker': {'color':cur_system.syscolor}, 'id':cur_system.id};               
+                all_systems_data[cur_system.id] = {'x':[], 'y':[],   mode: 'markers', type: 'scatter', 'name':cur_system.sysname,'marker': {'color':cur_system.syscolor}, 'id':cur_system.id};               
             }
 
             for (let d_index = 0; d_index < diagrams.length; d_index++) {
@@ -532,7 +532,7 @@
                     'x': tracelist[k1]['x'],
                     'y': tracelist[k1]['y'],
                     'text': tracelist[k1]['text'],
-                    mode: 'markers',
+                    mode: 'markers+lines',
                     hoverinfo: "all",
                     type: 'scatter',
                     legendgroup: tracelist[k1]['text'][0].split("-")[0],
