@@ -16,7 +16,6 @@
     <!-- Override CSS file - add your own CSS rules -->
     <link rel="stylesheet" href="assets/css/styles.css">
     <link rel="stylesheet" href="assets/css/ion.rangeSlider.css">
-    <link rel="stylesheet" href="assets/css/ion.rangeSlider.skinFlat.css">
     <link rel="stylesheet" type="text/css" href="assets/css/flatty.css" />
     <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css'>
@@ -29,65 +28,50 @@
 
 <body>
     <!-- Navigation -->
-    <nav class="navbar navbar-fixed-top navbar-inverse" role="navigation">
-        <div class="container-fluid">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="#">Geodesign Analytics</a>
-            </div>
-            <!-- /.navbar-header -->
-            <!-- /.navbar-collapse -->
-        </div>
-        <!-- /.container-fluid -->
+    <!-- As a heading -->
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+        <a class="navbar-brand" href="#">Geodesignhub Analytics</a>
+      
     </nav>
-    <!-- /.navbar -->
+
+
     <!-- Page Content -->
-    <div class="container-fluid">
+    <main role="main" class="container">
         <div class="row">
-            <div class="col-sm-12">
+            <div class="col-12">
                 <div class="row">
-                    <div class="col-lg-12">
-                        <p class="small">This is a <a href="https://www.geodesignhub.com/api/" target="_blank">Geodesignhub API</a> plugin to visually demonstrate the process of design. It downloads synthesis and diagram information data from the project and produces visualization for deeper analysis. This plugin is free and open source and the code for this plugin is located on a <a href="https://github.com/geodesignhub/geodesign-analytics">GitHub repository</a>.
+                    <div class="col-12">
+                        <p>This is a Geodesignhub plugin to visually analyze the process of designing. It reads design synthesis and diagram information from the project and produces a visualization for deeper understanding. This plugin is free and open source and the code for this plugin is located on a <a href="https://github.com/geodesignhub/geodesign-analytics">GitHub repository</a>.
                         </p><br>
                     </div>
                 </div>
             </div>
         </div>
         <!-- /.row -->
-
+        <hr>
         <div class="row">
-            <div class="col-md-12">
-                <h2>Contribution summary <small>Time when diagrams were added and by whom</small></h2>
+            <div class="col-12">
+                <h3>Contribution summary <small class="text-muted">Details about who added diagrams and when</small></h3>
                 <br>
-                <p class="lead" id="contribution_summary"></p>       
-                <hr>
-                <div class="col-md-4">
-                             
-                    <h4>Top five Contributors</h4>
-                    <p class="lead" id="member_contributions"></p>
-                    <br>
-                    
+                
+                <p class="lead" id="contribution_summary"></p>                
+                                    
+                <h6>Top five Contributors</h6>
+                <p class="lead" id="member_contributions"></p>
+                <br>
+                
+                <div class='diagram_chart'>
+                    <h6>Diagrams and systems</h6>                    
+                    <div id='diagram_chart'></div>
                 </div>
-                <div class="col-md-8">
-                    
-                    <div class='diagram_chart'>
-                        <h4>Diagrams and systems</h4>
-                       
-                        <div id='diagram_chart'></div>
-                    </div>
-                </div>
+            
                 
             </div>
         </div>
+        <hr>
         <div class="row">
-            <div class="col-md-12">
-                <h2>Design Timelines <small>A timeline of when different teams saved their designs</small></h2>
+            <div class="col-12">
+                <h3>Design Timelines <small class="text-muted">A timeline of when different teams saved their designs</small></h3>
                 <p>The first design saved is on the left, the last one saved is on the right.</p>
                 <div class='chart'>
                     <div id='chart'></div>
@@ -97,8 +81,8 @@
         <!-- /.row -->
         <hr>
         <div class="row">
-            <div class="col-md-12">
-                <h2>Diagram Paths <small>Diagrams selected by design teams throughout design process.</small></h2>
+            <div class="col-12">
+                <h3>Diagram Paths <small class="text-muted">Diagrams selected by design teams throughout design process.</small></h3>
                 <p>The y-axis is all the diagrams that are used in designs, grouped by systems. On the x-axis, designs are in chronological order of saving the first design saved in the project is on the left and last saved design is the right most value. A point means that the diagram was in the design and the joined lines mean that the diagram was present in consecutively saved designs by different independent teams.</p>
                 <div class='neogotiationchart'>
                     <div id='neogotiationchart'></div>
@@ -107,16 +91,17 @@
         </div>
         <!-- /.row -->
         <hr>
-        <h2>Design Pulse <small>Changes to the design made by the team.</small></h2>
+        <h3>Design Pulse <small class="text-muted">Changes to the design made by the team.</small></h3>
         <div id="ctpulsedetails">
         </div>
         <hr>
-        <h2>Design Evolution <small>Change teams and how their design evolved.</small></h2>
+        <h3>Design Evolution <small class="text-muted">Design teams and how their design evolved</small></h3>
         <div id="ctdetails">
         </div>
-        <footer class="margin-tb-3">
-        </footer>
-    </div>
+     
+  
+    </main>
+      
     <!-- /.container-fluid -->
     <!-- JQuery scripts -->
     <script type="text/javascript" src="assets/js/jquery.min.js"></script>
@@ -912,6 +897,7 @@
                 var cursyn = ctidsyn[sliderctid];
                 $("#slider-" + sliderctid).ionRangeSlider({
                     type: "single",
+                    skin: "square",
                     min: 1,
                     max: cursyn.length,
                     step: 1,
@@ -1081,14 +1067,21 @@
     <script>
         var apitoken = "<%= apitoken  %>"; //var test is now assigned to getTest which will only work on browsers
         var projectid = "<%= projectid %>"; //var test is now assigned to getTest which will only work on browsers  
-        $(function() {
-            if (apitoken !== "0" && projectid !== "0") {
-                $("#apikey").val(apitoken);
-                $("#projectid").val(projectid);
-                submitPost(apitoken, projectid);
-            }
+        var project_data = '<%- JSON.stringify(projectdata) %>';
+        // $(function() {
+        //     if (apitoken !== "0" && projectid !== "0") {
+        //         $("#apikey").val(apitoken);
+        //         $("#projectid").val(projectid);
+        //         submitPost(apitoken, projectid);
+        //     }
 
+        // });
+        clearExistingHistory();
+        synDataReceivedOK(JSON.parse(project_data));
+        humane.log("Project Data populated", {
+            addnCls: 'humane-flatty-success'
         });
+
     </script>
 </body>
 
