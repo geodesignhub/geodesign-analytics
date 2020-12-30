@@ -1067,7 +1067,7 @@
     <script>
         var apitoken = "<%= apitoken  %>"; //var test is now assigned to getTest which will only work on browsers
         var projectid = "<%= projectid %>"; //var test is now assigned to getTest which will only work on browsers  
-        var project_data = '<%- JSON.stringify(projectdata) %>';
+        var project_data = <%- projectdata %>;
         // $(function() {
         //     if (apitoken !== "0" && projectid !== "0") {
         //         $("#apikey").val(apitoken);
@@ -1077,7 +1077,7 @@
 
         // });
         clearExistingHistory();
-        synDataReceivedOK(JSON.parse(project_data));
+        synDataReceivedOK(project_data);
         humane.log("Project Data populated", {
             addnCls: 'humane-flatty-success'
         });

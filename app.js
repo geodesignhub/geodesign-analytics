@@ -109,14 +109,14 @@ app.get('/', function (request, response) {
                     let opts = {
                         "apitoken": request.query.apitoken, 
                         "projectid": request.query.projectid,
-                        "projectdata":{
+                        "projectdata":JSON.stringify({
                         "status": 1,
                         "syndiagrams": results,
                         "diagrams": diagrams,
                         "systems": systems,
                         "cteams": cteams,
                         "syns": allsyns,
-                        "members": members}
+                        "members": members})
                     }
                     response.render('gdhdna', opts);
                 });
