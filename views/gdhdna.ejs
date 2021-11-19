@@ -26,22 +26,33 @@
         <![endif]-->
 </head>
 
-<body>
+<body class="d-flex flex-column h-100">
     <!-- Navigation -->
     <!-- As a heading -->
     <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
         <a class="navbar-brand" href="#">Geodesignhub Analytics</a>
-      
+
     </nav>
 
+    <header>
+        <!-- Fixed navbar -->
+        <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+            <div class="container-fluid">
+                <p class="navbar-brand">Geodesignhub Analytics</p>
+            </div>
+        </nav>
+    </header>
 
     <!-- Page Content -->
-    <main role="main" class="container">
-        <div class="row">
-            <div class="col-12">
+    <main class="flex-shrink-0">
+        <div class="container">
+            <div class="mt-5 col-12">
                 <div class="row">
                     <div class="col-12">
-                        <p>This is a Geodesignhub plugin to visually analyze the process of designing. It reads design synthesis and diagram information from the project and produces a visualization for deeper understanding. This plugin is free and open source and the code for this plugin is located on a <a href="https://github.com/geodesignhub/geodesign-analytics">GitHub repository</a>.
+                        <p>This is a Geodesignhub plugin to visually analyze the process of designing. It reads design
+                            synthesis and diagram information from the project and produces a visualization for deeper
+                            understanding. This plugin is free and open source and the code for this plugin is located
+                            on a <a href="https://github.com/geodesignhub/geodesign-analytics">GitHub repository</a>.
                         </p><br>
                     </div>
                 </div>
@@ -49,29 +60,45 @@
         </div>
         <!-- /.row -->
         <hr>
-        <div class="row">
-            <div class="col-12">
-                <h3>Contribution summary <small class="text-muted">Details about who added diagrams and when</small></h3>
+        <div class="container">
+            <div class="mt-5 col-12">
+                <h3>Contribution summary <small class="text-muted">Details about who added diagrams and when</small>
+                </h3>
                 <br>
-                
-                <p class="lead" id="contribution_summary"></p>                
-                                    
+                <p class="lead" id="contribution_summary"></p>
                 <h6>Top five Contributors</h6>
                 <p class="lead" id="member_contributions"></p>
                 <br>
-                
+
                 <div class='diagram_chart'>
-                    <h6>Diagrams and systems</h6>                    
+                    <h6>Diagrams and systems</h6>
                     <div id='diagram_chart'></div>
                 </div>
-            
-                
+
+
             </div>
         </div>
         <hr>
-        <div class="row">
-            <div class="col-12">
-                <h3>Design Timelines <small class="text-muted">A timeline of when different teams saved their designs</small></h3>
+        <div class="container">
+            <div class="mt-5 col-12">
+                <h3>Diagram Paths <small class="text-muted">Diagrams selected by design teams throughout design
+                        process.</small></h3>
+                <p>The y-axis is all the diagrams that are used in designs, grouped by systems. On the x-axis, designs
+                    are in chronological order of saving the first design saved in the project is on the left and last
+                    saved design is the right most value. A point means that the diagram was in the design and the
+                    joined lines mean that the diagram was present in consecutively saved designs by different
+                    independent teams.</p>
+                <div class='neogotiationchart'>
+                    <div id='neogotiationchart'></div>
+                </div>
+            </div>
+        </div>
+        <!-- /.row -->
+        <hr>
+        <div class="container">
+            <div class="mt-5 col-12">
+                <h3>Design Timelines <small class="text-muted">A timeline of when different teams saved their
+                        designs</small></h3>
                 <p>The first design saved is on the left, the last one saved is on the right.</p>
                 <div class='chart'>
                     <div id='chart'></div>
@@ -80,35 +107,28 @@
         </div>
         <!-- /.row -->
         <hr>
-        <div class="row">
-            <div class="col-12">
-                <h3>Diagram Paths <small class="text-muted">Diagrams selected by design teams throughout design process.</small></h3>
-                <p>The y-axis is all the diagrams that are used in designs, grouped by systems. On the x-axis, designs are in chronological order of saving the first design saved in the project is on the left and last saved design is the right most value. A point means that the diagram was in the design and the joined lines mean that the diagram was present in consecutively saved designs by different independent teams.</p>
-                <div class='neogotiationchart'>
-                    <div id='neogotiationchart'></div>
+
+        <div class="container">
+            <div class="mt-5 col-12">
+                <h3>Design Pulse <small class="text-muted">Changes to the design made by the team.</small></h3>
+                <div id="ctpulsedetails">
+                </div>
+                <hr>
+                <h3>Design Evolution <small class="text-muted">Design teams and how their design evolved</small></h3>
+                <div id="ctdetails">
                 </div>
             </div>
         </div>
-        <!-- /.row -->
-        <hr>
-        <h3>Design Pulse <small class="text-muted">Changes to the design made by the team.</small></h3>
-        <div id="ctpulsedetails">
-        </div>
-        <hr>
-        <h3>Design Evolution <small class="text-muted">Design teams and how their design evolved</small></h3>
-        <div id="ctdetails">
-        </div>
-     
-  
+
     </main>
-      
+
     <!-- /.container-fluid -->
     <!-- JQuery scripts -->
     <script type="text/javascript" src="assets/js/jquery.min.js"></script>
     <script type="text/javascript" src="assets/js/humane.min.js"></script>
     <!-- Bootstrap Core scripts -->
     <script type="text/javascript" src="assets/js/ion.rangeSlider.min.js"></script>
-    <script type="text/javascript" src="assets/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="assets/js/bootstrap.bundle.min.js"></script>
     <script type="text/javascript" src="assets/js/jquery.sparkline.min.js"></script>
     <script type="text/javascript" src="assets/js/moment.min.js"></script>
     <script type="text/javascript" src="assets/js/plotly.min.js"></script>
@@ -118,11 +138,11 @@
             $("#ctdetails").html("");
             $("#ctpulsedetails").html("");
         }
-        var synDetails = function() {
+        var synDetails = function () {
             return {
                 cteams: [],
                 diagrams: [],
-                diagramslookup: [],
+                diagramslookup: {},
                 syndiagrams: [],
                 systems: [],
                 syns: [],
@@ -224,6 +244,7 @@
                 }
                 synDetails.diagramslookup[curdiag.id] = sysname + "-" + curdiag.rank;
             }
+
             synDetails.cteams = data.cteams;
             synDetails.diagrams = data.diagrams;
             synDetails.syndiagrams = data.syndiagrams;
@@ -240,45 +261,50 @@
             var synDiagLen = syndiagsorted.length;
 
             synDetails.ctidsyn = s[1];
-            createDiagramsMiniGrid(syndiagsorted, data.systems, synDetails.diagramslookup, data.cteams, synDetails.diagrams);
+            createDiagramsMiniGrid(syndiagsorted, data.systems, synDetails.diagramslookup, data.cteams, synDetails
+                .diagrams);
             var sar = populateAddedRemoved(syndiagsorted, synDetails.diagramslookup);
             synDetails.synAddRemove = sar;
             generateSynChart(syndiagsorted, data.cteams);
             generateSparklines(sar, data.systems, synDetails.diagramslookup);
-            generatenegotiationsChart(synDetails.syndiagrams, sar, syndiagsorted, synDetails.diagramslookup, data.cteams, data.diagrams);
+            generatenegotiationsChart(synDetails.syndiagrams, sar, syndiagsorted, synDetails.diagramslookup, data
+                .cteams, data.diagrams);
             generateCTPulse(sar, syndiagsorted, data.cteams);
-            
+
         }
+
         function populateContributionSummary(diagrams, systems, members) {
             const num_members = members.length;
             const num_diagrams = diagrams.length;
-            const contribution_text = '<b>'+num_diagrams + " diagrams</b> from <b>"+ num_members + " participants</b>";
+            const contribution_text = '<b>' + num_diagrams + " diagrams</b> from <b>" + num_members +
+                " participants</b>";
             $("#contribution_summary").html(contribution_text);
 
-            const authors = diagrams.map(x =>x.author);
+            const authors = diagrams.map(x => x.author);
             var counts = {};
-            authors.forEach(function(x) { counts[x] = (counts[x] || 0)+1; });
+            authors.forEach(function (x) {
+                counts[x] = (counts[x] || 0) + 1;
+            });
 
-            
+
             var sortable = [];
             for (var author in counts) {
                 sortable.push([author, counts[author]]);
             }
 
-            let reversed_sort = sortable.sort(function(a, b) {
+            let reversed_sort = sortable.sort(function (a, b) {
                 return a[1] - b[1];
             });
             reversed_sort.reverse();
             var contributor_list = '<ul>'
             for (let s_index = 0; s_index < reversed_sort.length; s_index++) {
-                if(s_index <= 4){
-                const element = reversed_sort[s_index];
-                contributor_list += '<li><b>'+element[0] +'</b> with '+ element[1]+' diagrams</li>';
-                }
-                else{
+                if (s_index <= 4) {
+                    const element = reversed_sort[s_index];
+                    contributor_list += '<li><b>' + element[0] + '</b> with ' + element[1] + ' diagrams</li>';
+                } else {
                     break;
                 }
-                
+
             }
             contributor_list += '</ul>';
             $("#member_contributions").html(contributor_list);
@@ -286,21 +312,33 @@
             var all_systems_data = {};
             for (let s_index = 0; s_index < systems.length; s_index++) {
                 const cur_system = systems[s_index];
-                all_systems_data[cur_system.id] = {'x':[], 'y':[],   mode: 'markers', type: 'scatter', 'name':cur_system.sysname,'marker': {'color':cur_system.syscolor}, 'id':cur_system.id};               
+                all_systems_data[cur_system.id] = {
+                    'x': [],
+                    'y': [],
+                    mode: 'lines+markers',
+                    type: 'scatter',
+                    'name': cur_system.sysname,
+                    'marker': {
+                        'color': cur_system.syscolor
+                    },
+                    'id': cur_system.id
+                };
             }
 
             for (let d_index = 0; d_index < diagrams.length; d_index++) {
                 const c_diagram = diagrams[d_index];
                 const created_at = moment(c_diagram.created_at).format("YYYY-MM-DD HH:MM:SS");;
                 all_systems_data[c_diagram.sysid]['x'].push(created_at);
-                all_systems_data[c_diagram.sysid]['y'].push(c_diagram.rank);               
-                
+                all_systems_data[c_diagram.sysid]['y'].push(c_diagram.rank);
+
             }
-            var all_plot_data =[];
-            for (var cur_plot in all_systems_data){
+            var all_plot_data = [];
+            for (var cur_plot in all_systems_data) {
                 all_plot_data.push(all_systems_data[cur_plot]);
             }
-          
+
+            console.log(all_plot_data);
+
             Plotly.newPlot('diagram_chart', all_plot_data);
         }
 
@@ -396,7 +434,8 @@
 
         }
 
-        function generatenegotiationsChart(syndiagrams, synaddremove, syndiagssorted, diagramslookup, cteams, diagrams) {
+        function generatenegotiationsChart(syndiagrams, synaddremove, syndiagssorted, diagramslookup, cteams,
+        diagrams) {
             // function for dynamic sort
             function dynamicSort(property) {
                 var sortOrder = 1;
@@ -404,7 +443,7 @@
                     sortOrder = -1;
                     property = property.substr(1);
                 }
-                return function(a, b) {
+                return function (a, b) {
                     var result = (a[property] < b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0;
                     return result * sortOrder;
                 }
@@ -591,7 +630,7 @@
             // loop over the cteams
             var ctlen = cteams.length;
             // get the row and cols for grid. 
-            var rows = Math.max.apply(Math, diagrams.map(function(o) {
+            var rows = Math.max.apply(Math, diagrams.map(function (o) {
                 return o.rank;
             }));
             var cols = systems.length;
@@ -600,7 +639,7 @@
             for (var x = 0; x < ctlen; x++) {
                 // create a grid
                 var ctid = cteams[x].id;
-                var grid = clickableGrid(ctid, systems, rows, cols, function(el, row, col, i) {
+                var grid = clickableGrid(ctid, systems, rows, cols, function (el, row, col, i) {
                     // console.log("You clicked on element:", el);
                     // console.log("You clicked on row:", row);
                     // console.log("You clicked on col:", col);
@@ -609,7 +648,7 @@
                     // if (synDetails.lastClicked) lastClicked.className = '';
                     // synDetails.lastClicked = el;
                 });
-                $("#gridcont-" + ctid).html(grid)
+                $("#gridcont-" + ctid).html(grid);
             }
         }
 
@@ -708,7 +747,7 @@
                 var dlookup = diagramslookup[curdiag];
                 var s = dlookup.split('-');
                 var col = s[0];
-                var row = s[1];
+                var row = s[1] - 1;
                 $("#" + curctid + '-' + col + '-' + row).addClass('selected');
             }
             // 
@@ -719,7 +758,7 @@
                     var dladd = diagramslookup[curadd];
                     var s1 = dladd.split('-');
                     var col1 = s1[0];
-                    var row1 = s1[1];
+                    var row1 = s1[1] - 1;
                     $("#" + curctid + '-' + col + '-' + row).removeClass('selected');
                     $("#" + curctid + '-' + col1 + '-' + row1).addClass('added');
                 }
@@ -731,7 +770,7 @@
                     var dlremove = diagramslookup[curremove];
                     var s2 = dlremove.split('-');
                     var col2 = s2[0];
-                    var row2 = s2[1];
+                    var row2 = s2[1] - 1;
                     $("#" + curctid + '-' + col + '-' + row).removeClass('selected');
                     $("#" + curctid + '-' + col2 + '-' + row2).addClass('removed');
                 }
@@ -769,12 +808,13 @@
 
                 }
 
-                toAdd = selDiags.filter(function(el) {
+                toAdd = selDiags.filter(function (el) {
                     return baselinediagrams.indexOf(el) < 0;
                 });
-                toRemove = baselinediagrams.filter(function(el) {
+                toRemove = baselinediagrams.filter(function (el) {
                     return selDiags.indexOf(el) < 0;
                 });
+
                 toRemove = toRemove.filter(onlyUnique);
                 toAdd = toAdd.filter(onlyUnique);
                 curSynAddRemove.push({
@@ -822,7 +862,7 @@
                     }
                 }
             }
-            var sd = syndiagdatahybrid.sort(function(a, b) {
+            var sd = syndiagdatahybrid.sort(function (a, b) {
                 // Turn your strings into dates, and then subtract them
                 // to get a value that is either negative, positive, or zero.
                 return new Date(a.creationdate) - new Date(b.creationdate);
@@ -848,7 +888,7 @@
                 var curCTEle = $("#cteam-" + curctid);
                 var syndescription = cursyn['description'];
                 var creationdate = cursyn['creationdate'];
-                var friendlycreationdate = moment(creationdate).format('MMMM Do YYYY, h:mm a');
+                var friendlycreationdate = moment(creationdate).format('MMM Do YYYY, h:mm a');
                 $('<div/>', {
                     id: 'syn-' + synid,
                     class: 'commits-listing'
@@ -856,7 +896,8 @@
 
                 $('<div/>', {
                     class: 'commit-group-title',
-                    html: '<span class="glyphicon glyphicon glyphicon-tag"> </span> Saved ' + friendlycreationdate + '.'
+                    html: '<span class="glyphicon glyphicon glyphicon-tag"> </span> Saved ' +
+                        friendlycreationdate + '.'
                 }).appendTo('#syn-' + synid);
                 $('<div/>', {
                     class: 'commit-header',
@@ -901,7 +942,7 @@
                     min: 1,
                     max: cursyn.length,
                     step: 1,
-                    onFinish: function(data) {
+                    onFinish: function (data) {
                         var $this = $(data.input),
                             synvalue = $this.prop("value"),
                             ctid = $this.prop("id").split('-')[1];
@@ -935,6 +976,7 @@
             for (var k1 = 0; k1 < diaglen; k1++) {
                 var cursyndiag = syndiags[k1];
                 if (synid === cursyndiag.synthesisid) {
+                    // console.log(toAdd, toRemove);                 
                     populateMiniGrid(cursyndiag.diagrams, ctid, dlookup, toAdd, toRemove);
                     break;
                 }
@@ -973,7 +1015,8 @@
                     class: 'col-sm-4 col-md-2 col-border'
                 }).appendTo("#row-" + row);
                 $('<h4>', {
-                    html: "<div class='square' style='background-color:" + curCT['color']['rgb'] + ";'></div> " + curCT['title']
+                    html: "<div class='square' style='background-color:" + curCT['color']['rgb'] +
+                        ";'></div> " + curCT['title']
                 }).appendTo("#cteam-" + curctid);
                 $('<hr>', {}).appendTo("#cteam-" + curctid);
 
@@ -1007,7 +1050,7 @@
                     addnCls: 'humane-flatty-info'
                 });
 
-                promise.done(function(data) {
+                promise.done(function (data) {
                     // console.log(data);
                     if (data.status) {
                         clearExistingHistory();
@@ -1022,7 +1065,7 @@
 
                     }
                 });
-                promise.fail(function(data) {
+                promise.fail(function (data) {
                     humane.log("Either the API Key or Project ID is incorrect. Please check your input.", {
                         addnCls: 'humane-flatty-error'
                     });
@@ -1065,16 +1108,13 @@
         }
     </script>
     <script>
-        var apitoken = "<%= apitoken  %>"; //var test is now assigned to getTest which will only work on browsers
-        var projectid = "<%= projectid %>"; //var test is now assigned to getTest which will only work on browsers  
+        
         var project_data = <%- projectdata %>;
 
-        clearExistingHistory();
         synDataReceivedOK(project_data);
         humane.log("Project Data populated", {
             addnCls: 'humane-flatty-success'
         });
-
     </script>
 </body>
 
