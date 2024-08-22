@@ -19,8 +19,8 @@ app.get('/', function (request, response) {
 
     if (request.query.apitoken && request.query.projectid) {
         
-        // let baseurl = 'https://www.geodesignhub.com/api/v1/projects/';
-        let baseurl = 'http://local.test:8000/api/v1/projects/';
+        let baseurl = 'https://www.geodesignhub.com/api/v1/projects/';
+        // let baseurl = 'http://local.test:8000/api/v1/projects/';
         let apikey = request.query.apitoken;
         let projectid = request.query.projectid;
         let cred = "Token " + apikey;        
