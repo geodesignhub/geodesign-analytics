@@ -29,19 +29,35 @@
 <body class="d-flex flex-column h-100">
     <!-- Navigation -->
     <!-- As a heading -->
+     
+<header data-bs-theme="dark">
     <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+      <div class="container-fluid">
         <a class="navbar-brand" href="#">Geodesignhub Analytics</a>
-
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+          <!-- <ul class="navbar-nav me-auto mb-2 mb-md-0">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="https://geodesignhub.github.io/geodesign-analytics">Github</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Link</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link disabled" aria-disabled="true">Disabled</a>
+            </li>
+          </ul> -->
+          <!-- <form class="d-flex" role="search">
+            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success" type="submit">Search</button>
+          </form> -->
+        </div>
+      </div>
     </nav>
-
-    <header>
-        <!-- Fixed navbar -->
-        <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-            <div class="container-fluid">
-                <p class="navbar-brand">Geodesignhub Analytics</p>
-            </div>
-        </nav>
-    </header>
+  </header>
+  
 
     <!-- Page Content -->
     <main class="flex-shrink-0">
@@ -49,10 +65,7 @@
             <div class="mt-5 col-12">
                 <div class="row">
                     <div class="col-12">
-                        <p>This is a Geodesignhub plugin to visually analyze the process of designing. It reads design
-                            synthesis and diagram information from the project and produces a visualization for deeper
-                            understanding. This plugin is free and open source and the code for this plugin is located
-                            on a <a href="https://github.com/geodesignhub/geodesign-analytics">GitHub repository</a>.
+                        <p>This is a Geodesignhub plugin to visually analyze the process of designing. It reads design synthesis and diagram information from the project and produces a visualization for deeper understanding. This code for this plugin is located on a <a href="https://github.com/geodesignhub/geodesign-analytics">GitHub repository</a>.
                         </p><br>
                     </div>
                 </div>
@@ -66,12 +79,12 @@
                 </h3>
                 <br>
                 <p class="lead" id="contribution_summary"></p>
-                <h6>Top five Contributors</h6>
+                <h5>Top Contributors</h5>
                 <p class="lead" id="member_contributions"></p>
                 <br>
 
                 <div class='diagram_chart'>
-                    <h6>Diagrams and systems</h6>
+                    <h5>Diagrams and systems</h5>
                     <div id='diagram_chart'></div>
                 </div>
 
@@ -225,10 +238,6 @@
                 data.cteams[x].color = color;
             }
 
-            // $('#syndropdown').unbind().find('option')
-            //     .remove()
-            //     .end();
-
             var diaglen = data.diagrams.length;
             var syslen = data.systems.length;
             for (var z = 0; z < diaglen; z++) {
@@ -252,7 +261,6 @@
             synDetails.systems = data.systems;
             synDetails.members = data.members['members'];
             populateContributionSummary(data.diagrams, data.systems, data.members['members']);
-
             // set up the containers with the cteams. 
             setupCTeamContainers(data.cteams);
             var s = populateCTeamSyn(data.syns, data.syndiagrams, data.cteams);
@@ -779,6 +787,7 @@
         }
 
         function populateAddedRemoved(syndiagsorted, diagramslookup) {
+            console.log(syndiagsorted, diagramslookup);
             var seenctid = [];
             var ctBaseDiagrams = {};
             var curSynAddRemove = [];

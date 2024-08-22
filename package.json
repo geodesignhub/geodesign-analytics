@@ -4,7 +4,8 @@
     "description": "A Geodesign Hub API experiment to help visualize evolution of a synthetic design and negotiations.",
     "main": "app.js",
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "node app.js"
     },
     "repository": {
         "type": "git",
@@ -17,10 +18,10 @@
     "author": "Geodesignhub",
     "license": "MIT",
     "dependencies": {
-        "async": "^2.6.4",
-        "body-parser": "^1.15.1",
-        "ejs": "^2.5.1",
-        "express": "^4.16.4",
-        "request": "^2.72.0"
+        "async": "^3.2.6",
+        "body-parser": "^1.20.2",
+        "ejs": "^3.1.10",
+        "express": "^4.19.2",
+        "request": "^2.88.2"
     }
 }

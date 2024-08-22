@@ -1,10 +1,10 @@
-var express = require("express");
-var req = require('request');
-var async = require('async');
-var bodyParser = require('body-parser');
-var app = express();
+let express = require("express");
+let req = require('request');
+let async = require('async');
+let bodyParser = require('body-parser');
+let app = express();
 
-var ejs = require('ejs');
+let ejs = require('ejs');
 app.set('view engine', 'ejs');
 
 // app.use(express.static(__dirname + '/views'));
@@ -19,20 +19,19 @@ app.get('/', function (request, response) {
 
     if (request.query.apitoken && request.query.projectid) {
         
-        var baseurl = 'https://www.geodesignhub.com/api/v1/projects/';
-        // var baseurl = 'http://local.test:8000/api/v1/projects/';
-        var apikey = request.query.apitoken;
-        var projectid = request.query.projectid;
-        var cred = "Token " + apikey;
+        // let baseurl = 'https://www.geodesignhub.com/api/v1/projects/';
+        let baseurl = 'http://local.test:8000/api/v1/projects/';
+        let apikey = request.query.apitoken;
+        let projectid = request.query.projectid;
+        let cred = "Token " + apikey;        
         
-        
-        var systems = baseurl + projectid + '/systems/';
-        var diagrams = baseurl + projectid + '/diagrams/';
-        var cteams = baseurl + projectid + '/cteams/';
-        var members = baseurl + projectid + '/members/';
+        let systems = baseurl + projectid + '/systems/';
+        let diagrams = baseurl + projectid + '/diagrams/';
+        let design_teams = baseurl + projectid + '/cteams/';
+        let members = baseurl + projectid + '/members/';
 
-        var allsyns = [];
-        var URLS = [systems, diagrams, cteams, members];
+        let all_synthesis = [];
+        let URLS = [systems, diagrams, design_teams, members];
         
         async.map(URLS, function (url, done) {
             req({
@@ -49,16 +48,16 @@ app.get('/', function (request, response) {
             });
         }, function (err, results) {
             if (err) return response.sendStatus(500);
-            // get the cteams
+            // get the design_teams
             systems = results[0];
             diagrams = results[1];
-            cteams = results[2];
+            design_teams = results[2];
             members = results[3];
-            var ctlen = cteams.length;
-            var ctURLS = [];
-            for (var x = 0; x < ctlen; x++) {
-                var ctid = cteams[x]['id'];
-                var cturl = baseurl + projectid + '/cteams/' + ctid + '/';
+            let design_team_length = design_teams.length;
+            let ctURLS = [];
+            for (let x = 0; x < design_team_length; x++) {
+                let ctid = design_teams[x]['id'];
+                let cturl = baseurl + projectid + '/cteams/' + ctid + '/';
                 ctURLS.push(cturl);
             }
             async.map(ctURLS, function (url, done) {
@@ -76,17 +75,17 @@ app.get('/', function (request, response) {
                 });
             }, function (err, results) {
                 if (err) return response.sendStatus(500);
-                var reslen = results.length;
-                var synURLs = [];
-                for (var k = 0; k < reslen; k++) {
-                    var synList = results[k]['synthesis'];
-                    var synlength = synList.length;
-                    for (var y = 0; y < synlength; y++) {
-                        var cursyn = synList[y];
-                        allsyns.push(cursyn);
-                        var cteamid = cursyn['cteamid'];
-                        var synID = cursyn['id']
-                        var cturl = baseurl + projectid + '/cteams/' + cteamid + '/' + synID + '/diagrams/';
+                let result_length = results.length;
+                let synURLs = [];
+                for (let k = 0; k < result_length; k++) {
+                    let synList = results[k]['synthesis'];
+                    let synthesis_length = synList.length;
+                    for (let y = 0; y < synthesis_length; y++) {
+                        let current_synthesis = synList[y];
+                        all_synthesis.push(current_synthesis);
+                        let cteamid = current_synthesis['cteamid'];
+                        let synthesis_id = current_synthesis['id']
+                        let cturl = baseurl + projectid + '/cteams/' + cteamid + '/' + synthesis_id + '/diagrams/';
                         synURLs.push(cturl);
                     }
                 }
@@ -114,8 +113,8 @@ app.get('/', function (request, response) {
                         "syndiagrams": results,
                         "diagrams": diagrams,
                         "systems": systems,
-                        "cteams": cteams,
-                        "syns": allsyns,
+                        "cteams": design_teams,
+                        "syns": all_synthesis,
                         "members": members})
                     }
                     response.render('gdhdna', opts);
