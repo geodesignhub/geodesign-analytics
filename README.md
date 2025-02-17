@@ -1,26 +1,27 @@
 # Geodesign Analytics
-How do you improve a Geodesign project? How do you deconstruct a design? How to identify how the social dynamics of a change team work? Who is the most effective at negotiations. This is visualization tool deconstruct a geodesign in a geodesign project. It uses the [Geodesignhub API](https://www.geodesignhub.com/api/) to download the design information and analyzes it providing important information on performance of the participants in a workshop.  
+
+Geodesign Analytics is a visualization tool designed to deconstruct and analyze geodesign projects. It leverages the [Geodesignhub API](https://www.geodesignhub.com/api/) to download design information and provides insights into the performance of participants in a workshop. This tool helps you understand the social dynamics of a change team, identify effective negotiators, and improve your geodesign projects.
 
 ## Screenshots
 
-### Navigate version history
+### Navigate Version History
 
-A change team produces many designs, see what diagrams were added and subtracted as the design develops.
+A change team produces many designs. This feature allows you to see what diagrams were added and subtracted as the design develops.
 
-![logo](https://i.imgur.com/hqvaHyH.gif)
+![Navigate Version History](https://i.imgur.com/hqvaHyH.gif)
 
 ### Design Evolution
 
-See how the design teams added or removed diagrams as their design progressed. This visualization shows how many diagrams were added or removed by every team for every design. 
+Track how design teams added or removed diagrams as their design progressed. This visualization shows the number of diagrams added or removed by each team for every design.
 
-![logo2](https://i.imgur.com/xVfW0lr.png)
+![Design Evolution](https://i.imgur.com/xVfW0lr.png)
 
 ### Design Pulse
 
-This visualization shows the number of additions and subtractions in the design as a line chart. This is useful to understand how flexible the teams have been especially in negotiations to achieve their goal.
+This line chart visualization shows the number of additions and subtractions in the design. It helps you understand how flexible the teams have been, especially in negotiations to achieve their goals.
 
-![logo3](https://i.imgur.com/O1zSBSz.png)
+![Design Pulse](https://i.imgur.com/O1zSBSz.png)
 
-## Adding the plugin
+## Adding the Plugin
 
-The plugin can be added to a project through the project administration panels.
+The plugin can be added to a project through the project administration panels. Geodesign Analytics
