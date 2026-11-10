@@ -211,7 +211,7 @@
                 for (var h = 0; h < syslen; h++) {
                     var cursys = data.systems[h];
                     if (cursysid === cursys.id) {
-                        sysname = cursys.sysname;
+                        sysname = cursys.name;
                         break;
                     }
                 }
@@ -855,7 +855,7 @@
             // map the systemid to column. 
             var collookup = {};
             for (var k = 0; k < systems.length; k++) {
-                collookup[k] = systems[k].sysname;
+                collookup[k] = systems[k].name;
             }
 
             var i = 0;
